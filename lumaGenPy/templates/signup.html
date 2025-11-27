@@ -110,7 +110,7 @@ input[type="password"]::-webkit-textfield-decoration-container {
   <div class="pt-4 pb-2">
     <button type="submit" class="flex w-full items-center justify-center rounded-lg bg-primary h-14 text-[#222210] text-base font-bold leading-normal transition-all hover:brightness-90">Sign Up</button>
   </div>
-  <p class="text-center text-[#9c9c49] dark:text-gray-400 text-sm font-normal">Already have an account? <a class="font-medium text-[#1c1c0d] dark:text-primary/80 hover:underline" href="login.html">Log In</a></p>
+  <p class="text-center text-[#9c9c49] dark:text-gray-400 text-sm font-normal">Already have an account? <a class="font-medium text-[#1c1c0d] dark:text-primary/80 hover:underline" href="{% url 'login' %}">Log In</a></p>
 </form>
 </div>
 </div>
@@ -200,3 +200,4 @@ setupPasswordToggle("confirmPassword", "toggleConfirmPassword");
 
 </body>
 </html>
+
