@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Luma - Role Selection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f4e225",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#222110",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col items-center justify-center p-4 group/design-root" style='font-family: Inter, "Noto Sans", sans-serif;'>
+<div class="layout-container flex h-full grow flex-col justify-center w-full max-w-lg">
+<!-- Page Heading -->
+<div class="flex flex-col gap-3 p-4 text-center">
+<h1 class="text-[#181711] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">How will you be using Luma?</h1>
+<p class="text-[#8a8760] dark:text-slate-400 text-base font-normal leading-normal">Select an option below to get started.</p>
+</div>
+<!-- Role Selection Cards -->
+<div class="flex flex-col sm:flex-row gap-4 p-4 w-full">
+<!-- Student Card -->
+<button id="role-student" data-role="student" aria-checked="true" class="role-btn flex flex-1 flex-col items-center justify-center gap-4 rounded-xl border-2 border-primary bg-primary/20 p-6 text-center cursor-pointer hover:bg-primary/30 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark" role="radio">
+<div class="flex items-center justify-center rounded-full h-16 w-16 bg-white dark:bg-slate-800">
+<span class="material-symbols-outlined text-4xl text-[#181711] dark:text-white" data-icon="school">school</span>
+</div>
+<div class="flex flex-col">
+<span class="text-lg font-bold text-[#181711] dark:text-white">I am a Student</span>
+<span class="text-sm text-[#8a8760] dark:text-slate-400">Access courses and track your progress.</span>
+</div>
+</button>
+<!-- Admin Card -->
+<button id="role-admin" data-role="admin" aria-checked="false" class="role-btn flex flex-1 flex-col items-center justify-center gap-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 text-center cursor-pointer hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark" role="radio">
+<div class="flex items-center justify-center rounded-full h-16 w-16 bg-slate-100 dark:bg-slate-700">
+<span class="material-symbols-outlined text-4xl text-[#181711] dark:text-white" data-icon="shield_person">shield_person</span>
+</div>
+<div class="flex flex-col">
+<span class="text-lg font-bold text-[#181711] dark:text-white">I am an Admin</span>
+<span class="text-sm text-[#8a8760] dark:text-slate-400">Manage courses and student accounts.</span>
+</div>
+</button>
+</div>
+<!-- Continue Button -->
+<div class="flex px-4 py-3 justify-center w-full">
+<button id="continueBtn" class="flex w-full max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-primary text-[#181711] text-base font-bold leading-normal tracking-[0.015em] hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark">
+<span class="truncate">Continue</span>
+</button>
+</div>
+<!-- Meta Text Link -->
+<div class="flex px-4 py-3 justify-center w-full">
+<p ><a class="font-bold underline text-[#181711] dark:text-white hover:text-primary" href="{% url 'homepage' %}">Continue as a Guest</a></p>
+</div>
+</div>
+</div>
+
+<script>
+(() => {
+  const studentBtn = document.getElementById('role-student');
+  const adminBtn = document.getElementById('role-admin');
+  const continueBtn = document.getElementById('continueBtn');
+
+  let selected = 'student'; // default
+
+  function updateSelection(role) {
+    selected = role;
+    if (role === 'student') {
+      studentBtn.classList.add('border-primary','bg-primary/20');
+      studentBtn.classList.remove('border-slate-200','bg-white');
+      studentBtn.setAttribute('aria-checked','true');
+
+      adminBtn.classList.remove('border-primary','bg-primary/20');
+      adminBtn.classList.add('border-slate-200','bg-white');
+      adminBtn.setAttribute('aria-checked','false');
+    } else {
+      adminBtn.classList.add('border-primary','bg-primary/20');
+      adminBtn.classList.remove('border-slate-200','bg-white');
+      adminBtn.setAttribute('aria-checked','true');
+
+      studentBtn.classList.remove('border-primary','bg-primary/20');
+      studentBtn.classList.add('border-slate-200','bg-white');
+      studentBtn.setAttribute('aria-checked','false');
+    }
+  }
+
+  // click handlers
+  studentBtn.addEventListener('click', () => updateSelection('student'));
+  adminBtn.addEventListener('click', () => updateSelection('admin'));
+
+  // keyboard accessibility (Space/Enter)
+  [studentBtn, adminBtn].forEach(btn => {
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        btn.click();
+      }
+    });
+  });
+
+  continueBtn.addEventListener('click', () => {
+    if (selected === 'student') {
+      // Redirect to student login
+      location.href = '/login/';
+    } else {
+      // Redirect to admin login
+      location.href = '/adminlogin/';
+    }
+  });
+
+  // initialize visual state
+  updateSelection(selected);
+})();
+</script>
+
+</body></html>

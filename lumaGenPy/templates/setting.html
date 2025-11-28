@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Luma - Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#f4e225",
+              "background-light": "#f8f8f5",
+              "background-dark": "#1a1a1a",
+              "card-light": "#ffffff",
+              "card-dark": "#242424",
+              "text-light": "#181711",
+              "text-dark": "#e0e0e0",
+              "subtle-light": "#8a8760",
+              "subtle-dark": "#a0a0a0",
+              "border-light": "#e6e5db",
+              "border-dark": "#3a3a3a",
+              "element-light": "#f5f4f0",
+              "element-dark": "#2d2d2d",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.5rem",
+              "lg": "1rem",
+              "xl": "1.5rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+<div class="relative flex min-h-screen w-full">
+<aside class="flex h-screen flex-col border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark w-64 p-4 sticky top-0">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="Luma platform logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCJT18t6wHfURQQ8Z3ht2g6SHUqnIMHcX85F8RqEFO25YUty5UKb-mlsS5DG9AGhf2aPMKo-MBH0MtfDZ2lCQFl6MPjkES8iPWd3BxPzTlVSZanDN9BzdZBhzDss9uMf6cWA0HMuRYwm9BSpW47_kx-0h4cOc35DugHPpGOxDbp-fqUHTPNTiHwzJJ8MKXQ5XyfW83xfBNj0G9Oqm02KA_0TQQdFAabVD9YE4QEfHyychL_PqZo3oclVFOFub9Zgk9GsXFFRA7mqVTJ");'></div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 text-base font-medium leading-normal dark:text-slate-200">{{ full_name }}</h1>
+<p class="text-slate-500 text-sm font-normal leading-normal dark:text-slate-400">Admin Panel</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 rounded-lg bg-accent/10 px-3 py-2 transition-colors duration-200" href="{% url 'admin_page' %}">
+<span class="material-symbols-outlined text-accent dark:text-slate-300">list_alt</span>
+<p class="text-sm font-medium leading-normal text-accent dark:text-accent-dark">Topics</p>
+</a>
+
+<a class="flex items-center gap-3 rounded-lg bg-accent/10 px-3 py-2 transition-colors duration-200" href="{% url 'users' %}">
+<span class="material-symbols-outlined text-accent dark:text-accent-dark">group</span>
+<p class="text-sm font-medium leading-normal text-accent dark:text-accent-dark">Users</p>
+</a>
+
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors duration-200 bg-[#FFF4E6]"
+   href="{% url 'setting' %}">
+    <span class="material-symbols-outlined text-[#F4A21E]">settings</span>
+    <p class="text-sm font-medium leading-normal text-[#F4A21E]">Settings</p>
+</a>
+
+
+
+</nav>
+</div>
+<div class="mt-auto flex flex-col gap-1">
+
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-element-light dark:hover:bg-element-dark" href="homepage.html">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark">logout</span>
+<p class="text-text-light dark:text-text-dark text-sm font-medium leading-normal">Logout</p>
+</a>
+</div>
+</aside>
+<main class="flex-1 p-8">
+<div class="w-full max-w-4xl mx-auto flex flex-col gap-8">
+<header>
+<h1 class="text-text-light dark:text-text-dark text-3xl font-black leading-tight tracking-tight">Settings</h1>
+<p class="text-subtle-light dark:text-subtle-dark mt-1">Manage your profile and account settings.</p>
+</header>
+<div class="bg-card-light dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark">
+<div class="p-6 border-b border-border-light dark:border-border-dark">
+<h2 class="text-lg font-bold text-text-light dark:text-text-dark">Profile Settings</h2>
+<p class="text-sm text-subtle-light dark:text-subtle-dark">Update your personal information.</p>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium text-text-light dark:text-text-dark mb-1" for="full-name">Full Name</label>
+<input class="form-input w-full rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border-border-light dark:border-border-dark bg-element-light dark:bg-element-dark placeholder:text-subtle-light dark:placeholder:text-subtle-dark" id="full-name" type="text" value="Alex Rivera"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-light dark:text-text-dark mb-1" for="email">Email Address</label>
+<input class="form-input w-full rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border-border-light dark:border-border-dark bg-element-light dark:bg-element-dark placeholder:text-subtle-light dark:placeholder:text-subtle-dark" id="email" type="email" value="alex.r@example.com"/>
+</div>
+
+<div class="md:col-span-2">
+<label class="block text-sm font-medium text-text-light dark:text-text-dark mb-1">Profile Picture</label>
+<div class="flex items-center gap-4">
+<img alt="User profile picture" class="h-16 w-16 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhkvFyP06HY38YrB1PV21QNzBDTWQE95nEYYTkTDHjYQ9gz2qqRl1Be0nLQnu6i5DF_rxFHy8x9R1YcDt2HqAD5dQ1fpN7Dta_J_VhLqC3SFmSHRCM1CvwR-0uL4XXOIL8qFjKBCZDZW9rcUkp_vA5xKX0zu7POCdf4aKmBlkljkZNwpvtcqeKxkh0QWh7ZJTQ-bbuFW1bKBfz5kKzkr_QmSHK-x8jo0r54yuiAZTuwny9pP-kOdmYzLXjeyf5QOKPhFaaZ9ynEypt"/>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-element-light dark:bg-element-dark px-4 text-sm font-medium text-text-light dark:text-text-dark">Change</button>
+</div>
+</div>
+</div>
+<div class="bg-element-light dark:bg-element-dark/50 p-4 flex justify-end gap-3 rounded-b-xl">
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-card-light dark:bg-card-dark px-4 text-sm font-medium text-text-light dark:text-text-dark border border-border-light dark:border-border-dark">Cancel</button>
+<button class="flex w-auto cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-text-light text-sm font-bold leading-normal tracking-[0.015em]">Save Changes</button>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark rounded-xl border border-red-500/30 dark:border-red-500/50">
+<div class="p-6 border-b border-border-light dark:border-border-dark">
+<h2 class="text-lg font-bold text-red-600 dark:text-red-400">Danger Zone</h2>
+<p class="text-sm text-subtle-light dark:text-subtle-dark">These actions are permanent and cannot be undone.</p>
+</div>
+<div class="p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div>
+<h3 class="font-medium text-text-light dark:text-text-dark">Delete Your Account</h3>
+<p class="text-sm text-subtle-light dark:text-subtle-dark">Once you delete your account, there is no going back.</p>
+</div>
+<button class="flex w-full sm:w-auto cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-red-600 text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-red-700">Delete Account</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

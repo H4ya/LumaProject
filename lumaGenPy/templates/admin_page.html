@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Luma - Manage Topics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#197fe6",
+            "accent": {
+              DEFAULT: "#f59e0b", // Amber 500
+              hover: "#d97706",   // Amber 600
+              dark: "#facc15"     // Yellow 400 for dark mode text
+            },
+            "background-light": "#f6f7f8",
+            "background-dark": "#111921",
+          },
+          fontFamily: {
+            "display": ["Lexend", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex min-h-screen w-full">
+<aside class="flex w-64 flex-col border-r border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-background-dark">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="Luma platform logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCJT18t6wHfURQQ8Z3ht2g6SHUqnIMHcX85F8RqEFO25YUty5UKb-mlsS5DG9AGhf2aPMKo-MBH0MtfDZ2lCQFl6MPjkES8iPWd3BxPzTlVSZanDN9BzdZBhzDss9uMf6cWA0HMuRYwm9BSpW47_kx-0h4cOc35DugHPpGOxDbp-fqUHTPNTiHwzJJ8MKXQ5XyfW83xfBNj0G9Oqm02KA_0TQQdFAabVD9YE4QEfHyychL_PqZo3oclVFOFub9Zgk9GsXFFRA7mqVTJ");'></div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 text-base font-medium leading-normal dark:text-slate-200">{{ full_name }}</h1>
+<p class="text-slate-500 text-sm font-normal leading-normal dark:text-slate-400">Admin Panel</p>
+</div>
+</div>
+<nav class="mt-4 flex flex-col gap-2">
+
+<a class="flex items-center gap-3 rounded-lg bg-accent/10 px-3 py-2 transition-colors duration-200" href="{% url 'admin_page' %}">
+<span class="material-symbols-outlined text-accent dark:text-accent-dark">list_alt</span>
+<p class="text-sm font-medium leading-normal text-accent dark:text-accent-dark">Topics</p>
+</a>
+
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="{% url 'users' %}">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">group</span>
+<p class="text-slate-700 text-sm font-medium leading-normal dark:text-slate-300">Users</p>
+</a>
+
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="{% url 'setting' %}">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">settings</span>
+<p class="text-slate-700 text-sm font-medium leading-normal dark:text-slate-300">Settings</p>
+</a>
+</nav>
+</div>
+<div class="mt-auto flex flex-col gap-1">
+
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-slate-100 dark:hover:bg-slate-800" href="{% url 'homepage' %}">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">logout</span>
+<p class="text-slate-700 text-sm font-medium leading-normal dark:text-slate-300">Log Out</p>
+</a>
+</div>
+</aside>
+<main class="flex flex-1 flex-col p-6 lg:p-8">
+<div class="flex flex-wrap items-center justify-between gap-4">
+<h1 class="text-slate-900 text-3xl font-black leading-tight tracking-[-0.033em] dark:text-white">Manage Topics</h1>
+<button onclick="openModal()" class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-accent text-white h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em] transition-all duration-300 hover:bg-accent-hover hover:scale-105 active:scale-95">
+    <span class="material-symbols-outlined">add</span>
+    <span class="truncate">Add New Topic</span>
+</button>
+
+</div>
+<div class="mt-6 flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+<label class="flex h-12 min-w-40 w-full flex-col">
+<div class="flex h-full w-full flex-1 items-stretch rounded-lg">
+<div class="flex items-center justify-center rounded-l-lg border-r-0 bg-background-light pl-4 text-slate-500 dark:border-none dark:bg-background-dark dark:text-slate-400">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex h-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg border-l-0 bg-background-light px-4 pl-2 text-base font-normal leading-normal text-slate-900 placeholder:text-slate-500 focus:outline-0 focus:ring-2 focus:ring-accent/50 dark:border-none dark:bg-background-dark dark:text-white dark:placeholder:text-slate-400" placeholder="Search topics..." value=""/>
+</div>
+</label>
+<div class="flex flex-wrap gap-3">
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-background-light pl-4 pr-2 transition-colors duration-200 hover:bg-slate-200 dark:bg-background-dark dark:hover:bg-slate-800">
+<p class="text-sm font-medium leading-normal text-slate-700 dark:text-slate-300">Status: All</p>
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">expand_more</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-background-light pl-4 pr-2 transition-colors duration-200 hover:bg-slate-200 dark:bg-background-dark dark:hover:bg-slate-800">
+<p class="text-sm font-medium leading-normal text-slate-700 dark:text-slate-300">Category: All</p>
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">expand_more</span>
+</button>
+</div>
+</div>
+<div class="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="border-b border-slate-200 bg-slate-50 text-xs uppercase text-slate-500 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400">
+<tr>
+<th class="px-6 py-3 font-medium" scope="col">Title</th>
+<th class="px-6 py-3 font-medium" scope="col">Category</th>
+<th class="px-6 py-3 font-medium" scope="col">Status</th>
+<th class="px-6 py-3 font-medium" scope="col">Last Modified</th>
+<th class="px-6 py-3 font-medium text-right" scope="col">Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-slate-200 transition-colors duration-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
+<th class="whitespace-nowrap px-6 py-4 font-medium text-slate-900 dark:text-white" scope="row">Introduction to Quantum Physics</th>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-300">Science</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">Published</span>
+</td>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-300">2024-03-15</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-accent/10 hover:text-accent hover:scale-110 dark:text-slate-400 dark:hover:bg-accent-dark/10 dark:hover:text-accent-dark">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-red-500/10 hover:text-red-500 hover:scale-110 dark:text-slate-400 dark:hover:bg-red-500/10 dark:hover:text-red-500">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-slate-200 transition-colors duration-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
+<th class="whitespace-nowrap px-6 py-4 font-medium text-slate-900 dark:text-white" scope="row">The Art of the Renaissance</th>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-300">History</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">Published</span>
+</td>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-300">2024-02-28</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-accent/10 hover:text-accent hover:scale-110 dark:text-slate-400 dark:hover:bg-accent-dark/10 dark:hover:text-accent-dark">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-red-500/10 hover:text-red-500 hover:scale-110 dark:text-slate-400 dark:hover:bg-red-500/10 dark:hover:text-red-500">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-slate-200 transition-colors duration-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
+<th class="whitespace-nowrap px-6 py-4 font-medium text-slate-900 dark:text-white" scope="row">Basics of Python Programming</th>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-300">Technology</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">Draft</span>
+</td>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-300">2024-03-20</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-accent/10 hover:text-accent hover:scale-110 dark:text-slate-400 dark:hover:bg-accent-dark/10 dark:hover:text-accent-dark">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-red-500/10 hover:text-red-500 hover:scale-110 dark:text-slate-400 dark:hover:bg-red-500/10 dark:hover:text-red-500">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-slate-200 transition-colors duration-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
+<th class="whitespace-nowrap px-6 py-4 font-medium text-slate-900 dark:text-white" scope="row">Understanding Economic Cycles</th>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-300">Economics</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">Published</span>
+</td>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-300">2024-01-10</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-accent/10 hover:text-accent hover:scale-110 dark:text-slate-400 dark:hover:bg-accent-dark/10 dark:hover:text-accent-dark">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-red-500/10 hover:text-red-500 hover:scale-110 dark:text-slate-400 dark:hover:bg-red-500/10 dark:hover:text-red-500">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+
+<!-- Add Topic Modal -->
+<div id="addTopicModal" class="fixed inset-0 bg-black/40 flex items-center justify-center hidden">
+  <div class="bg-white dark:bg-slate-900 p-6 rounded-xl w-[400px] shadow-lg">
+    <h2 class="text-xl font-bold mb-4 text-slate-900 dark:text-white">Add New Topic</h2>
+
+    <div class="flex flex-col gap-3">
+      <input id="topicTitle" class="form-input rounded-lg p-2 border" placeholder="Topic Title" />
+
+      <input id="topicCategory" class="form-input rounded-lg p-2 border" placeholder="Category" />
+
+      <select id="topicStatus" class="form-input rounded-lg p-2 border">
+        <option>Published</option>
+        <option>Draft</option>
+      </select>
+    </div>
+
+    <div class="flex justify-end gap-3 mt-4">
+      <button onclick="closeModal()" class="px-4 py-2 rounded-lg bg-slate-200">Cancel</button>
+      <button onclick="saveTopic()" class="px-4 py-2 rounded-lg bg-accent text-white">Save</button>
+    </div>
+  </div>
+</div>
+<script>
+
+  const searchInput = document.querySelector("input[placeholder='Search topics...']");
+searchInput.addEventListener("input", function () {
+  const value = this.value.toLowerCase();
+  const rows = document.querySelectorAll("tbody tr");
+
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+    row.style.display = text.includes(value) ? "" : "none";
+  });
+});
+
+function openModal() {
+  // reset every time modal opens
+  document.getElementById("topicTitle").value = "";
+  document.getElementById("topicCategory").value = "";
+  document.getElementById("topicStatus").value = "Published";
+
+  document.getElementById("addTopicModal").classList.remove("hidden");
+}
+
+
+function closeModal() {
+  document.getElementById("addTopicModal").classList.add("hidden");
+}
+
+function saveTopic() {
+  
+  const title = document.getElementById("topicTitle").value;
+  const category = document.getElementById("topicCategory").value;
+  const status = document.getElementById("topicStatus").value;
+  const date = new Date().toISOString().split("T")[0];
+
+  if (title.trim() === "" || category.trim() === "") {
+    alert("Please fill all fields");
+    return;
+  }
+
+  const table = document.querySelector("tbody");
+
+  const newRow = `
+<tr class="border-b border-slate-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
+  <th class="whitespace-nowrap px-6 py-4 font-medium text-slate-900 dark:text-white">${title}</th>
+  <td class="px-6 py-4 text-slate-600 dark:text-slate-300">${category}</td>
+  <td class="px-6 py-4">
+    <span class="inline-flex items-center rounded-full ${status === "Published" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"} px-2.5 py-0.5 text-xs font-medium">
+      ${status}
+    </span>
+  </td>
+  <td class="px-6 py-4 text-slate-600 dark:text-slate-300">${date}</td>
+  <td class="px-6 py-4 text-right">
+    <div class="flex justify-end gap-2">
+      <button class="rounded-full p-2 text-slate-500 hover:bg-accent/10 hover:text-accent">
+        <span class="material-symbols-outlined">edit</span>
+      </button>
+      <button onclick="this.closest('tr').remove()" class="rounded-full p-2 text-slate-500 hover:bg-red-500/10 hover:text-red-500">
+        <span class="material-symbols-outlined">delete</span>
+      </button>
+    </div>
+  </td>
+</tr>`;
+
+  table.insertAdjacentHTML("beforeend", newRow);
+  // Clear inputs after saving
+document.getElementById("topicTitle").value = "";
+document.getElementById("topicCategory").value = "";
+document.getElementById("topicStatus").value = "Published";
+
+
+  closeModal();
+}
+</script>
+
+</body>
+</html>
