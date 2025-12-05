@@ -1,48 +1,58 @@
-
 <!DOCTYPE html>
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Luma - Personalized Homepage</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              primary: "#FBBF24", // Vibrant Yellow
-              "primary-dark": "#F59E0B",
-              "background-light": "#FDFBF6",
-              "background-dark": "#1C1C1C",
-              "text-light": "#333333",
-              "text-dark": "#E0E0E0",
-              "card-light": "#FFFFFF",
-              "card-dark": "#2C2C2C",
-              "subtext-light": "#555555",
-              "subtext-dark": "#A0A0A0",
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Luma - Personalized Homepage</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FBBF24", // Vibrant Yellow
+                        "primary-dark": "#F59E0B",
+                        "background-light": "#FDFBF6",
+                        "background-dark": "#1C1C1C",
+                        "text-light": "#333333",
+                        "text-dark": "#E0E0E0",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#2C2C2C",
+                        "subtext-light": "#555555",
+                        "subtext-dark": "#A0A0A0",
+                    },
+                    fontFamily: {
+                        display: ["Lexend", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        lg: "0.75rem",
+                        xl: "1rem",
+                        full: "9999px",
+                    },
+                },
             },
-            fontFamily: {
-              display: ["Lexend", "sans-serif"],
-            },
-            borderRadius: {
-              DEFAULT: "0.5rem",
-              lg: "0.75rem",
-              xl: "1rem",
-              full: "9999px",
-            },
-          },
-        },
-      };
+        };
     </script>
-<style>
-      .material-symbols-outlined {
-        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-      }
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+        }
+        /* Custom class for the filled heart icon */
+        .liked-icon {
+            color: #EF4444; /* Tailwind red-500 */
+            font-variation-settings: "FILL" 1, "wght" 500;
+        }
+        /* Custom class for the filled bookmark icon */
+        .saved-icon {
+            color: #FBBF24; /* Primary Yellow */
+            font-variation-settings: "FILL" 1, "wght" 500;
+        }
     </style>
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
@@ -61,10 +71,10 @@
 </div>
 <div class="hidden sm:flex flex-1 justify-end items-center gap-8">
 <a class="text-sm font-medium hover:text-primary-dark transition-colors" href="#discover-topics">Topics</a>
-<!-- <a class="text-sm font-medium hover:text-primary-dark transition-colors" href="{% url 'about' %}">About</a> -->
+
 <div class="flex items-center gap-4">
 <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
-<img alt="User avatar" onclick="openUserProfile()" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ1xF8XxoQNcnmX-Ggzu_va85TeZMt6JGUmqm7QpACEXQ1ElVPdweMfHtUZqpMiQCs6fxmUqvZ-MGj4UbqDxKsCvjzFKz30zvQDpycwEGJMvDEv1HN842Pxsm7DrGVy8qEcw2tDebKZq9_WuBl2_HrCGorqKDZvqGTHK5zTJ7sEBzgD6boxkgTTriXwMzxGsgLGrLT74yVRmAxjeFF9NBynIgNVf0naE_tG7OUYGj4J2LGaq7_PJeMvWx7ZXlBjUB8eD6JeRq6PJLJ"/>
+<img alt="User avatar" onclick="openUserProfile()" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ1xF8XxoQNcnmX-Ggzu_va85TeZMt6JGUmqm7QpACEXQ1ElVPdweMfHtUZqpMiQCs6fxmUqvZ-MGj4UbqDxKsCvjzFKz30zvQDpycwEGJMvDEv1HN842Pxsm3DrGVy8qEcw2tDebKZq9_WuBl2_HrCGorqKDZvqGTHK5zTJ7sEBzgD6boxkgTTriXwMzxGsgLGrLT74yVRmAxjeFF9NBynIgNVf0naE_tG7OUYGj4J2LGaq7_PJeMvWx7ZXlBjUB8eD6JeRq6PJLJ"/>
 </div>
 <a class="text-sm font-medium text-primary border border-primary rounded-full px-4 py-1.5 bg-card-light hover:bg-primary hover:text-card-light transition-colors duration-300" href="{% url 'homepage' %}">Sign Out</a>
 </div>
@@ -87,8 +97,9 @@
 </div>
 <div class="layout-content-container flex flex-col max-w-[1100px] flex-1"> 
     <h2 id="discover-topics" class="text-3xl font-bold leading-tight tracking-[-0.015em] px-4 pb-4 pt-8 text-center sm:text-left">Discover Our Topics</h2>
-<div id="topics" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-    <a href="{% url 'algorthim' %}" class="group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
+<div id="topics-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+    <!-- Topic 1: Algorithms (ID: topic-101) -->
+    <a href="{% url 'algorthim' %}" data-topic-id="topic-101" class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
         <div class="flex justify-between items-start">
             <div class="transition-opacity duration-300 group-hover:opacity-0">
                 <span class="material-symbols-outlined text-4xl text-primary mb-2">code</span>
@@ -100,17 +111,20 @@
                 <p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">Algorithms power everything from your social media feed to GPS navigation, making them fundamental to modern technology.</p>
             </div>
             <div class="flex gap-2 z-10">
-                <button class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors">
+                <button class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                        onclick="event.preventDefault(); toggleLike('topic-101', this);">
                     <span class="material-symbols-outlined text-xl">favorite</span>
                 </button>
-                <button class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors">
+                <button class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                        onclick="event.preventDefault(); toggleSave('topic-101', this);">
                     <span class="material-symbols-outlined text-xl">bookmark</span>
                 </button>
             </div>
         </div>
     </a>
 
-    <a href="{% url 'logic_proof' %}" class="group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
+    <!-- Topic 2: Logic & Proof Techniques (ID: topic-102) -->
+    <a href="{% url 'logic_proof' %}" data-topic-id="topic-102" class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
         <div class="flex justify-between items-start">
             <div class="transition-opacity duration-300 group-hover:opacity-0">
                 <span class="material-symbols-outlined text-4xl text-primary mb-2">rule</span>
@@ -122,17 +136,20 @@
                 <p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">From law to computer science, rigorous logic is crucial for creating sound arguments and bug-free software.</p>
             </div>
             <div class="flex gap-2 z-10">
-                <button class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors">
+                <button class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                        onclick="event.preventDefault(); toggleLike('topic-102', this);">
                     <span class="material-symbols-outlined text-xl">favorite</span>
                 </button>
-                <button class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors">
+                <button class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                        onclick="event.preventDefault(); toggleSave('topic-102', this);">
                     <span class="material-symbols-outlined text-xl">bookmark</span>
                 </button>
             </div>
         </div>
     </a>
 
-    <a href="{% url 'software_eng' %}" class="group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
+    <!-- Topic 3: Software Engineering (ID: topic-103) -->
+    <a href="{% url 'software_eng' %}" data-topic-id="topic-103" class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
         <div class="flex justify-between items-start">
             <div class="transition-opacity duration-300 group-hover:opacity-0">
                 <span class="material-symbols-outlined text-4xl text-primary mb-2">engineering</span>
@@ -144,17 +161,20 @@
                 <p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">It's the discipline that allows teams to build complex applications like your favorite apps and websites reliably.</p>
             </div>
             <div class="flex gap-2 z-10">
-                <button class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors">
+                <button class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                        onclick="event.preventDefault(); toggleLike('topic-103', this);">
                     <span class="material-symbols-outlined text-xl">favorite</span>
                 </button>
-                <button class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors">
+                <button class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                        onclick="event.preventDefault(); toggleSave('topic-103', this);">
                     <span class="material-symbols-outlined text-xl">bookmark</span>
                 </button>
             </div>
         </div>
     </a>
 
-    <a href="{% url 'operating_systems' %}" class="group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
+    <!-- Topic 4: Operating Systems (ID: topic-104) -->
+    <a href="{% url 'operating_systems' %}" data-topic-id="topic-104" class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
         <div class="flex justify-between items-start">
             <div class="transition-opacity duration-300 group-hover:opacity-0">
                 <span class="material-symbols-outlined text-4xl text-primary mb-2">memory</span>
@@ -166,17 +186,20 @@
                 <p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">Understanding OS principles helps you write better, more efficient code that works with the hardware, not against it.</p>
             </div>
             <div class="flex gap-2 z-10">
-                <button class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors">
+                <button class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                        onclick="event.preventDefault(); toggleLike('topic-104', this);">
                     <span class="material-symbols-outlined text-xl">favorite</span>
                 </button>
-                <button class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors">
+                <button class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                        onclick="event.preventDefault(); toggleSave('topic-104', this);">
                     <span class="material-symbols-outlined text-xl">bookmark</span>
                 </button>
             </div>
         </div>
     </a>
 
-    <a href="{% url 'computer_org' %}" class="group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
+    <!-- Topic 5: Computer Organization (ID: topic-105) -->
+    <a href="{% url 'computer_org' %}" data-topic-id="topic-105" class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
         <div class="flex justify-between items-start">
             <div class="transition-opacity duration-300 group-hover:opacity-0">
                 <span class="material-symbols-outlined text-4xl text-primary mb-2">developer_board</span>
@@ -188,10 +211,12 @@
                 <p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">Knowing how hardware and software interact is key to optimizing performance and debugging complex issues.</p>
             </div>
             <div class="flex gap-2 z-10">
-                <button class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors">
+                <button class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                        onclick="event.preventDefault(); toggleLike('topic-105', this);">
                     <span class="material-symbols-outlined text-xl">favorite</span>
                 </button>
-                <button class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors">
+                <button class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                        onclick="event.preventDefault(); toggleSave('topic-105', this);">
                     <span class="material-symbols-outlined text-xl">bookmark</span>
                 </button>
             </div>
@@ -232,32 +257,165 @@
 </div>
 </div>
 </div>
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden" id="login-modal" style="display:none;">
-<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-2xl p-8 max-w-sm w-full mx-4 text-center">
-<div class="flex justify-center mb-4">
-<div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
-<span class="material-symbols-outlined text-4xl text-primary">lock</span>
-</div>
-</div>
-<h3 class="text-2xl font-bold mb-2">Log in to Continue</h3>
-<p class="text-subtext-light dark:text-subtext-dark mb-6">You need to be logged in to like or save topics.</p>
-<div class="flex flex-col gap-3">
-<a class="w-full flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-8 bg-gradient-to-r from-primary to-primary-dark text-gray-800 text-base font-bold leading-normal tracking-[0.015em] hover:shadow-lg hover:scale-105 transform transition-all duration-300" href="#">
-                        Log In
-                    </a>
-<button class="w-full text-sm font-medium text-subtext-light dark:text-subtext-dark hover:text-primary-dark transition-colors py-2" onclick="document.getElementById('login-modal').style.display='none'">
-                        Maybe Later
-                    </button>
-</div>
-</div>
-</div>
-</div>
-<script>
-    function openUserProfile() {
+
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Global variables for Firebase services
+    let db;
+    let auth;
+    let userId = null;
+    let isAuthReady = false;
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+    // showLoginModal() function removed
+
+    // --- Firebase Initialization and Auth ---
+    async function initFirebase() {
+        try {
+            const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+             setLogLevel('debug'); // Uncomment for debugging Firestore rules/access
+
+            const __initial_auth_token = typeof window.__initial_auth_token !== 'undefined' ? window.__initial_auth_token : undefined;
+
+            if (__initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+                // Sign in anonymously to ensure userId is always available for saving/liking
+                await signInAnonymously(auth); 
+            }
+
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    userId = user.uid;
+                    console.log("Authenticated with UID:", userId);
+                    isAuthReady = true;
+                    // Start listening for real-time changes
+                    setupRealtimeListeners();
+                } else {
+                    // This block should theoretically not run if signInAnonymously succeeds
+                    userId = null; 
+                    isAuthReady = true;
+                    console.log("User signed out or failed to sign in.");
+                }
+            });
+
+        } catch (error) {
+            console.error("Firebase initialization or authentication failed:", error);
+            isAuthReady = true; 
+        }
+    }
+
+    // --- Firestore Operations ---
+
+    // Generic function to toggle a topic status (Like or Save)
+    async function toggleTopicStatus(topicId, collectionName) {
+        // --- Authentication Check removed from logic ---
+        
+        // Use the current userId (either authenticated or anonymous)
+        const currentUserId = userId || auth.currentUser?.uid; 
+        if (!currentUserId) {
+             console.error("User ID is not defined. Cannot save or like.");
+             return;
+        }
+
+        const path = `/artifacts/${appId}/users/${currentUserId}/${collectionName}`;
+        const topicDocRef = doc(db, path, topicId);
+
+        try {
+            // Find the correct elements for UI feedback
+            const topicElement = document.querySelector(`.topic-card[data-topic-id="${topicId}"]`);
+            const iconClass = collectionName === 'likes' ? 'liked-icon' : 'saved-icon';
+            const buttonClass = collectionName === 'likes' ? '.like-button' : '.save-button';
+            
+            const button = topicElement.querySelector(buttonClass);
+            const iconSpan = button.querySelector('.material-symbols-outlined');
+
+            // Determine if the topic is currently marked as active based on UI state 
+            const isActive = iconSpan.classList.contains(iconClass);
+
+            if (isActive) {
+                // If active, delete the document
+                await deleteDoc(topicDocRef);
+                console.log(`Topic ${topicId} removed from ${collectionName}.`);
+            } else {
+                // If inactive, add the document
+                await setDoc(topicDocRef, { 
+                    topicId: topicId,
+                    timestamp: Date.now()
+                });
+                console.log(`Topic ${topicId} added to ${collectionName}.`);
+            }
+        } catch (error) {
+            console.error(`Error toggling status in ${collectionName}:`, error);
+        }
+    }
+
+    // Public functions called by the HTML buttons
+    window.toggleLike = (topicId, buttonElement) => toggleTopicStatus(topicId, 'likes');
+    window.toggleSave = (topicId, buttonElement) => toggleTopicStatus(topicId, 'saves');
+    window.openUserProfile = () => {
         window.location.href = '/user_page/';
     }
 
-    
+ 
+
+    function setupRealtimeListeners() {
+        if (!userId) {
+            
+            userId = auth.currentUser?.uid;
+            if (!userId) return; 
+        }
+        
+        const likedTopicsPath = `/artifacts/${appId}/users/${userId}/likes`;
+        const savedTopicsPath = `/artifacts/${appId}/users/${userId}/saves`;
+
+        // Listener for Likes
+        onSnapshot(collection(db, likedTopicsPath), (snapshot) => {
+            const likedTopicIds = new Set();
+            snapshot.forEach(doc => likedTopicIds.add(doc.id));
+            updateTopicIcons(likedTopicIds, 'likes');
+        });
+
+        // Listener for Saves
+        onSnapshot(collection(db, savedTopicsPath), (snapshot) => {
+            const savedTopicIds = new Set();
+            snapshot.forEach(doc => savedTopicIds.add(doc.id));
+            updateTopicIcons(savedTopicIds, 'saves');
+        });
+    }
+
+    function updateTopicIcons(activeTopicIds, type) {
+        const iconClass = type === 'likes' ? 'liked-icon' : 'saved-icon';
+        const buttonClass = type === 'likes' ? '.like-button' : '.save-button';
+        
+        // Find all topic cards on the page
+        document.querySelectorAll('.topic-card').forEach(card => {
+            const topicId = card.getAttribute('data-topic-id');
+            const button = card.querySelector(buttonClass);
+            const iconSpan = button ? button.querySelector('.material-symbols-outlined') : null;
+
+            if (iconSpan) {
+                if (activeTopicIds.has(topicId)) {
+                    // Topic is in the database: Apply active style
+                    iconSpan.classList.add(iconClass);
+                } else {
+                    // Topic is NOT in the database: Remove active style
+                    iconSpan.classList.remove(iconClass);
+                }
+            }
+        });
+    }
+
+    // Initialize Firebase and set up listeners when the page loads
+    initFirebase();
 </script>
 
-</body></html>
+</body>
+</html>

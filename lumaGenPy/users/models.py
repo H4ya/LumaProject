@@ -45,26 +45,34 @@ class User(models.Model):
 
 
 
-class Topics(models.Model):
-    topic_id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=255)
+class Topic(models.Model):
+    
+    topic_id = models.AutoField(primary_key=True) 
+    title = models.CharField(max_length=255, null=False)
+    summary = models.TextField(blank=True, null=True)
+    purpose = models.TextField(blank=True, null=True)
+    #text = models.TextField(blank=True, null=True)
+
+    class Meta:
+        
+        db_table = 'topics' 
+        # Use ordering to display the latest topics first
+        ordering = ['title'] 
 
     def __str__(self):
         return self.title
 
-    class Meta:
-        db_table = 'topics' 
-
 
 class Save(models.Model):
+    
     student = models.ForeignKey(Students, on_delete=models.CASCADE, db_column='std_id', related_name='saved_topics')
-    topic = models.ForeignKey(Topics, on_delete=models.CASCADE, db_column='topic_id', related_name='saved_by')
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, db_column='topic_id', related_name='saved_by')
     saved_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
         unique_together = ('student', 'topic')
         db_table = 'saves'
-        managed = False  # Prevent migrations for this table
+        managed = False   
 
     def __str__(self):
         return f"{self.student} saved {self.topic}"
@@ -81,8 +89,9 @@ class Save(models.Model):
 #     def __str__(self):
 #         return f"{self.student} liked {self.topic}"
 class Like(models.Model):
+     
     student = models.ForeignKey(Students, on_delete=models.CASCADE, db_column='std_id', related_name='liked_topics')
-    topic = models.ForeignKey(Topics, on_delete=models.CASCADE, db_column='topic_id', related_name='liked_by')
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, db_column='topic_id', related_name='liked_by')
 
     class Meta:
         unique_together = ('student', 'topic')
@@ -95,7 +104,7 @@ class Note(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     last_edited = models.DateTimeField(auto_now=True)
-    key_takeaway = models.TextField()
+    #key_takeaway = models.TextField()
 
     class Meta:
         db_table = 'notes'

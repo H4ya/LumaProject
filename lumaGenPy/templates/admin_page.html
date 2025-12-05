@@ -95,212 +95,238 @@
 
 </div>
 <div class="mt-6 flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-<label class="flex h-12 min-w-40 w-full flex-col">
-<div class="flex h-full w-full flex-1 items-stretch rounded-lg">
-<div class="flex items-center justify-center rounded-l-lg border-r-0 bg-background-light pl-4 text-slate-500 dark:border-none dark:bg-background-dark dark:text-slate-400">
-<span class="material-symbols-outlined">search</span>
-</div>
-<input class="form-input flex h-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg border-l-0 bg-background-light px-4 pl-2 text-base font-normal leading-normal text-slate-900 placeholder:text-slate-500 focus:outline-0 focus:ring-2 focus:ring-accent/50 dark:border-none dark:bg-background-dark dark:text-white dark:placeholder:text-slate-400" placeholder="Search topics..." value=""/>
-</div>
-</label>
-<div class="flex flex-wrap gap-3">
-<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-background-light pl-4 pr-2 transition-colors duration-200 hover:bg-slate-200 dark:bg-background-dark dark:hover:bg-slate-800">
-<p class="text-sm font-medium leading-normal text-slate-700 dark:text-slate-300">Status: All</p>
-<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">expand_more</span>
-</button>
-<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-background-light pl-4 pr-2 transition-colors duration-200 hover:bg-slate-200 dark:bg-background-dark dark:hover:bg-slate-800">
-<p class="text-sm font-medium leading-normal text-slate-700 dark:text-slate-300">Category: All</p>
-<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">expand_more</span>
-</button>
-</div>
+    
+    <form method="get" action="{% url 'admin_page' %}" class="flex flex-col gap-4">
+        <label class="flex h-12 min-w-40 w-full flex-col">
+            <div class="flex h-full w-full flex-1 items-stretch rounded-lg">
+                
+                <div class="flex items-center justify-center rounded-l-lg border-r-0 bg-background-light pl-4 text-slate-500 dark:border-none dark:bg-background-dark dark:text-slate-400">
+                    <button type="submit" class="p-0 m-0 border-none bg-transparent hover:text-primary transition-colors" title="Search">
+                        <span class="material-symbols-outlined">search</span>
+                    </button>
+                </div>
+                
+                <input 
+                    name="search" 
+                    id="topic-search-input"
+                    class="form-input flex h-full min-w-0 flex-1 resize-none overflow-hidden border-l-0 bg-background-light px-4 pl-2 text-base font-normal leading-normal text-slate-900 placeholder:text-slate-500 focus:outline-0 focus:ring-2 focus:ring-accent/50 dark:border-none dark:bg-background-dark dark:text-white dark:placeholder:text-slate-400" 
+                    placeholder="Search topics by title..." 
+                    value="{{ search_term|default:'' }}"
+                />
+
+                {% if search_term %}
+                <button type="button" 
+                    onclick="document.getElementById('topic-search-input').value = ''; this.form.submit();"
+                    class="text-sm font-medium bg-gray-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 items-center justify-center px-3 py-1 rounded-r-lg hover:bg-gray-300 dark:hover:bg-slate-600 transition-colors"
+                    title="Clear Search">
+                    Clear
+                </button>
+                {% else %}
+                <div class="text-subtle-light dark:text-subtle-dark flex border-none bg-element-light dark:bg-element-dark items-center justify-center pr-4 rounded-r-lg invisible">
+                    <span class="material-symbols-outlined">close</span>
+                </div>
+                {% endif %}
+
+            </div>
+        </label>
+    </form>
+</form>
 </div>
 <div class="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-<div class="overflow-x-auto">
-<table class="w-full text-left text-sm">
-<thead class="border-b border-slate-200 bg-slate-50 text-xs uppercase text-slate-500 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400">
-<tr>
-<th class="px-6 py-3 font-medium" scope="col">Title</th>
-<th class="px-6 py-3 font-medium" scope="col">Category</th>
-<th class="px-6 py-3 font-medium" scope="col">Status</th>
-<th class="px-6 py-3 font-medium" scope="col">Last Modified</th>
-<th class="px-6 py-3 font-medium text-right" scope="col">Actions</th>
-</tr>
-</thead>
-<tbody>
-<tr class="border-b border-slate-200 transition-colors duration-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
-<th class="whitespace-nowrap px-6 py-4 font-medium text-slate-900 dark:text-white" scope="row">Introduction to Quantum Physics</th>
-<td class="px-6 py-4 text-slate-600 dark:text-slate-300">Science</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">Published</span>
-</td>
-<td class="px-6 py-4 text-slate-600 dark:text-slate-300">2024-03-15</td>
-<td class="px-6 py-4 text-right">
-<div class="flex justify-end gap-2">
-<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-accent/10 hover:text-accent hover:scale-110 dark:text-slate-400 dark:hover:bg-accent-dark/10 dark:hover:text-accent-dark">
-<span class="material-symbols-outlined">edit</span>
-</button>
-<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-red-500/10 hover:text-red-500 hover:scale-110 dark:text-slate-400 dark:hover:bg-red-500/10 dark:hover:text-red-500">
-<span class="material-symbols-outlined">delete</span>
-</button>
-</div>
-</td>
-</tr>
-<tr class="border-b border-slate-200 transition-colors duration-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
-<th class="whitespace-nowrap px-6 py-4 font-medium text-slate-900 dark:text-white" scope="row">The Art of the Renaissance</th>
-<td class="px-6 py-4 text-slate-600 dark:text-slate-300">History</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">Published</span>
-</td>
-<td class="px-6 py-4 text-slate-600 dark:text-slate-300">2024-02-28</td>
-<td class="px-6 py-4 text-right">
-<div class="flex justify-end gap-2">
-<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-accent/10 hover:text-accent hover:scale-110 dark:text-slate-400 dark:hover:bg-accent-dark/10 dark:hover:text-accent-dark">
-<span class="material-symbols-outlined">edit</span>
-</button>
-<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-red-500/10 hover:text-red-500 hover:scale-110 dark:text-slate-400 dark:hover:bg-red-500/10 dark:hover:text-red-500">
-<span class="material-symbols-outlined">delete</span>
-</button>
-</div>
-</td>
-</tr>
-<tr class="border-b border-slate-200 transition-colors duration-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
-<th class="whitespace-nowrap px-6 py-4 font-medium text-slate-900 dark:text-white" scope="row">Basics of Python Programming</th>
-<td class="px-6 py-4 text-slate-600 dark:text-slate-300">Technology</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">Draft</span>
-</td>
-<td class="px-6 py-4 text-slate-600 dark:text-slate-300">2024-03-20</td>
-<td class="px-6 py-4 text-right">
-<div class="flex justify-end gap-2">
-<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-accent/10 hover:text-accent hover:scale-110 dark:text-slate-400 dark:hover:bg-accent-dark/10 dark:hover:text-accent-dark">
-<span class="material-symbols-outlined">edit</span>
-</button>
-<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-red-500/10 hover:text-red-500 hover:scale-110 dark:text-slate-400 dark:hover:bg-red-500/10 dark:hover:text-red-500">
-<span class="material-symbols-outlined">delete</span>
-</button>
-</div>
-</td>
-</tr>
-<tr class="border-b border-slate-200 transition-colors duration-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
-<th class="whitespace-nowrap px-6 py-4 font-medium text-slate-900 dark:text-white" scope="row">Understanding Economic Cycles</th>
-<td class="px-6 py-4 text-slate-600 dark:text-slate-300">Economics</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">Published</span>
-</td>
-<td class="px-6 py-4 text-slate-600 dark:text-slate-300">2024-01-10</td>
-<td class="px-6 py-4 text-right">
-<div class="flex justify-end gap-2">
-<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-accent/10 hover:text-accent hover:scale-110 dark:text-slate-400 dark:hover:bg-accent-dark/10 dark:hover:text-accent-dark">
-<span class="material-symbols-outlined">edit</span>
-</button>
-<button class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-red-500/10 hover:text-red-500 hover:scale-110 dark:text-slate-400 dark:hover:bg-red-500/10 dark:hover:text-red-500">
-<span class="material-symbols-outlined">delete</span>
-</button>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
+    <div class="overflow-x-auto">
+        <div class="max-h-64 overflow-y-auto">
+            <table class="w-full text-left text-sm">
+                <thead class="border-b border-slate-200 bg-slate-50 text-xs uppercase text-slate-500 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400 sticky top-0 z-10">
+                    <tr>
+                        <th class="px-6 py-3 font-medium" scope="col">Title</th>
+                        <th class="px-6 py-3 font-medium text-right" scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if topics_list %}
+                    {% for topic in topics_list %}
+                    <tr class="border-b border-slate-200 transition-colors duration-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
+                        <th class="whitespace-nowrap px-6 py-4 font-medium text-slate-900 dark:text-white" scope="row">
+                            {{ topic.title }}
+                        </th>
+
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex justify-end gap-2">
+                                <button type="button" onclick="openEditModal('{{ topic.topic_id }}', '{{ topic.title }}', '{{ topic.summary|default:'' }}', '{{ topic.purpose|default:'' }}', '{{ topic.text|default:'' }}')" 
+                                        class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-accent/10 hover:text-accent hover:scale-110 dark:text-slate-400 dark:hover:bg-accent-dark/10 dark:hover:text-accent-dark" title="Edit Topic">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </button>
+                                <button type="button" onclick="confirmDelete('{{ topic.topic_id }}', '{{ topic.title }}')"
+                                        class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-red-500/10 hover:text-red-500 hover:scale-110 dark:text-slate-400 dark:hover:bg-red-500/10 dark:hover:text-red-500" title="Delete Topic">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr class="border-b border-slate-200 dark:border-slate-800">
+                        <td colspan="2" class="px-6 py-8 text-center text-sm text-subtle-light dark:text-subtle-dark">
+                            No topics found in the database.
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 </main>
 </div>
 
-<!-- Add Topic Modal -->
-<div id="addTopicModal" class="fixed inset-0 bg-black/40 flex items-center justify-center hidden">
-  <div class="bg-white dark:bg-slate-900 p-6 rounded-xl w-[400px] shadow-lg">
+<div id="addTopicModal" 
+    class="fixed inset-0 bg-black/40 flex items-center justify-center hidden z-50" 
+    onclick="if (event.target.id === 'addTopicModal') closeModal()">
+  <div class="bg-white dark:bg-slate-900 p-6 rounded-xl w-full max-w-lg mx-4 shadow-xl transform transition-all duration-300 scale-100">
     <h2 class="text-xl font-bold mb-4 text-slate-900 dark:text-white">Add New Topic</h2>
+    
+    <form method="POST" action="{% url 'create_topic' %}"> 
+        {% csrf_token %}
+        <div class="flex flex-col gap-3">
+          
+            <input name="title" id="topicTitle" class="form-input rounded-lg p-2 border border-slate-300 dark:border-slate-700 bg-background-light dark:bg-background-dark text-text-light dark:text-white placeholder-slate-400" placeholder="Topic Title" required/>
+          
+            <textarea name="summary" id="topicSummary" class="form-textarea rounded-lg p-2 border border-slate-300 dark:border-slate-700 bg-background-light dark:bg-background-dark text-text-light dark:text-white placeholder-slate-400" placeholder="Summary "></textarea>
+          
+            <textarea name="purpose" id="topicPurpose" class="form-textarea rounded-lg p-2 border border-slate-300 dark:border-slate-700 bg-background-light dark:bg-background-dark text-text-light dark:text-white placeholder-slate-400" placeholder="Purpose "></textarea>
+          
+          </div>
 
-    <div class="flex flex-col gap-3">
-      <input id="topicTitle" class="form-input rounded-lg p-2 border" placeholder="Topic Title" />
-
-      <input id="topicCategory" class="form-input rounded-lg p-2 border" placeholder="Category" />
-
-      <select id="topicStatus" class="form-input rounded-lg p-2 border">
-        <option>Published</option>
-        <option>Draft</option>
-      </select>
-    </div>
-
-    <div class="flex justify-end gap-3 mt-4">
-      <button onclick="closeModal()" class="px-4 py-2 rounded-lg bg-slate-200">Cancel</button>
-      <button onclick="saveTopic()" class="px-4 py-2 rounded-lg bg-accent text-white">Save</button>
-    </div>
+        <div class="flex justify-end gap-3 mt-4">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 text-sm font-medium rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">Cancel</button>
+          <button type="submit" class="px-4 py-2 text-sm font-medium rounded-lg bg-accent text-white hover:bg-accent-hover transition-colors">Save Topic</button>
+        </div>
+    </form>
   </div>
 </div>
-<script>
 
-  const searchInput = document.querySelector("input[placeholder='Search topics...']");
-searchInput.addEventListener("input", function () {
-  const value = this.value.toLowerCase();
-  const rows = document.querySelectorAll("tbody tr");
+<div id="deleteTopicModal"
+    class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300"
+    onclick="if (event.target.id === 'deleteTopicModal') closeDeleteModal()">
+    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-sm mx-4 p-6 transform transition-all duration-300 scale-100">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-red-600 dark:text-red-400">Confirm Deletion</h3>
+            <button type="button" onclick="closeDeleteModal()"
+                class="text-subtle-light dark:text-subtle-dark hover:text-red-500 transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <p class="text-slate-700 dark:text-slate-300 mb-6">
+            Are you sure you want to delete the topic **<span
+                id="delete_topic_name_display" class="font-semibold"></span>**? This action cannot be undone.
+        </p>
 
-  rows.forEach(row => {
-    const text = row.innerText.toLowerCase();
-    row.style.display = text.includes(value) ? "" : "none";
-  });
-});
-
-function openModal() {
-  // reset every time modal opens
-  document.getElementById("topicTitle").value = "";
-  document.getElementById("topicCategory").value = "";
-  document.getElementById("topicStatus").value = "Published";
-
-  document.getElementById("addTopicModal").classList.remove("hidden");
-}
-
-
-function closeModal() {
-  document.getElementById("addTopicModal").classList.add("hidden");
-}
-
-function saveTopic() {
-  
-  const title = document.getElementById("topicTitle").value;
-  const category = document.getElementById("topicCategory").value;
-  const status = document.getElementById("topicStatus").value;
-  const date = new Date().toISOString().split("T")[0];
-
-  if (title.trim() === "" || category.trim() === "") {
-    alert("Please fill all fields");
-    return;
-  }
-
-  const table = document.querySelector("tbody");
-
-  const newRow = `
-<tr class="border-b border-slate-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
-  <th class="whitespace-nowrap px-6 py-4 font-medium text-slate-900 dark:text-white">${title}</th>
-  <td class="px-6 py-4 text-slate-600 dark:text-slate-300">${category}</td>
-  <td class="px-6 py-4">
-    <span class="inline-flex items-center rounded-full ${status === "Published" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"} px-2.5 py-0.5 text-xs font-medium">
-      ${status}
-    </span>
-  </td>
-  <td class="px-6 py-4 text-slate-600 dark:text-slate-300">${date}</td>
-  <td class="px-6 py-4 text-right">
-    <div class="flex justify-end gap-2">
-      <button class="rounded-full p-2 text-slate-500 hover:bg-accent/10 hover:text-accent">
-        <span class="material-symbols-outlined">edit</span>
-      </button>
-      <button onclick="this.closest('tr').remove()" class="rounded-full p-2 text-slate-500 hover:bg-red-500/10 hover:text-red-500">
-        <span class="material-symbols-outlined">delete</span>
-      </button>
+        <div class="flex justify-end gap-3">
+            <button type="button" onclick="closeDeleteModal()"
+                class="px-4 py-2 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                Cancel
+            </button>
+            <button type="button" onclick="submitDeleteTopicForm()"
+                class="px-4 py-2 text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 transition-colors">
+                Delete Topic
+            </button>
+        </div>
     </div>
-  </td>
-</tr>`;
+</div>
 
-  table.insertAdjacentHTML("beforeend", newRow);
-  // Clear inputs after saving
-document.getElementById("topicTitle").value = "";
-document.getElementById("topicCategory").value = "";
-document.getElementById("topicStatus").value = "Published";
+<form method="POST" id="simpleDeleteForm" action="" class="hidden">
+    {% csrf_token %} 
+    <input type="hidden" id="delete_topic_id_hidden" name="topic_id"> 
+</form>
+<div id="editTopicModal" 
+    class="fixed inset-0 bg-black/40 flex items-center justify-center hidden z-50" 
+    onclick="if (event.target.id === 'editTopicModal') closeEditModal()">
+  <div class="bg-white dark:bg-slate-900 p-6 rounded-xl w-full max-w-lg mx-4 shadow-xl transform transition-all duration-300 scale-100">
+    <h2 class="text-xl font-bold mb-4 text-slate-900 dark:text-white">Update Topic</h2>
+    
+    <form method="POST" id="editTopicForm" action=""> 
+        {% csrf_token %}
+        <input type="hidden" id="edit_topic_id" name="topic_id">
+        <input type="hidden" name="text" id="editTopicText">
+
+        <div class="flex flex-col gap-3">
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Title</label>
+          <input name="title" id="editTopicTitle" class="form-input rounded-lg p-2 border border-slate-300 dark:border-slate-700 bg-background-light dark:bg-background-dark text-text-light dark:text-white placeholder-slate-400" required/>
+          
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Summary</label>
+          <textarea name="summary" id="editTopicSummary" class="form-textarea rounded-lg p-2 border border-slate-300 dark:border-slate-700 bg-background-light dark:bg-background-dark text-text-light dark:text-white placeholder-slate-400"></textarea>
+          
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Purpose</label>
+          <textarea name="purpose" id="editTopicPurpose" class="form-textarea rounded-lg p-2 border border-slate-300 dark:border-slate-700 bg-background-light dark:bg-background-dark text-text-light dark:text-white placeholder-slate-400"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-3 mt-4">
+          <button type="button" onclick="closeEditModal()" class="px-4 py-2 text-sm font-medium rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">Cancel</button>
+          <button type="submit" class="px-4 py-2 text-sm font-medium rounded-lg bg-accent-dark text-white hover:bg-accent transition-colors">Save Changes</button>
+        </div>
+    </form>
+  </div>
+</div>
 
 
-  closeModal();
+<script>
+function openModal() {
+      document.getElementById("addTopicModal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("addTopicModal").classList.add("hidden");
+    }
+
+    
+    function openEditModal(id, title, summary, purpose, text) {
+        
+        const updateUrl = `{% url 'update_topic' pk=12345 %}`.replace('12345', id);
+        document.getElementById('editTopicForm').action = updateUrl;
+        
+        document.getElementById('editTopicTitle').value = title;
+        document.getElementById('editTopicSummary').value = summary;
+        document.getElementById('editTopicPurpose').value = purpose;
+        document.getElementById('editTopicText').value = text; // Hidden text field
+        document.getElementById('edit_topic_id').value = id;
+        
+        
+        document.getElementById('editTopicModal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+        document.getElementById('editTopicModal').classList.add('hidden');
+    }
+
+    function confirmDelete(id, title) {
+  
+    document.getElementById('delete_topic_name_display').textContent = title;
+
+    
+    const deleteForm = document.getElementById('simpleDeleteForm');
+    deleteForm.action = `{% url 'delete_topic' pk=12345 %}`.replace('12345', id); 
+    document.getElementById('delete_topic_id_hidden').value = id; 
+
+    document.getElementById('deleteTopicModal').classList.remove('hidden');
 }
-</script>
 
+function closeDeleteModal() {
+    document.getElementById('deleteTopicModal').classList.add('hidden');
+}
+
+function submitDeleteTopicForm() {
+   
+    closeDeleteModal();
+    
+    
+    document.getElementById('simpleDeleteForm').submit();
+}
+    
+    // --- SEARCH LOGIC ---
+    const searchInput = document.querySelector("input[name='search']");
+    if (searchInput) {
+        
+    }
+</script>
 </body>
 </html>

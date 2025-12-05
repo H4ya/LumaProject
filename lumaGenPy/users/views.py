@@ -1,14 +1,95 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.db.models import Q
 from .models import *
+import array as arr
 from .forms import SignupForm
 from django.http import JsonResponse
 from django.contrib.auth import logout
+from django.contrib.auth.hashers import make_password ,check_password
+
 
 
 ################################--Admin related views-- ##########################################
+def create_topic_view(request):
+    """Handles creating a new topic from the Add Topic modal form submission."""
+    try:
+        # Get data 
+        title = request.POST.get('title')
+        summary = request.POST.get('summary')
+        purpose = request.POST.get('purpose')
+        
+        #text = request.POST.get('text', '') 
+
+        
+        if not title:
+            return redirect('admin_page') 
+
+        # Create and save the new Topic object
+        Topic.objects.create(
+            title=title,
+            summary=summary,
+            purpose=purpose,
+            #text=text
+        )
+
+        # Redirect back to the main topics list page 
+        return redirect('admin_page') 
+
+    except Exception as e:
+        print(f"Error during topic creation: {e}")
+        # Redirect back to the list page on failure
+        return redirect('admin_page')
 
 
+# ---  View to Handle Topic Deletion ---
+
+def update_topic_view(request, pk):
+    """Handles updating an existing topic from the Edit Topic modal form submission."""
+    try:
+        # Get the existing topic object
+        topic = get_object_or_404(Topic, topic_id=pk)
+
+        # Get data from request.POST
+        topic.title = request.POST.get('title', topic.title)
+        topic.summary = request.POST.get('summary', topic.summary)
+        topic.purpose = request.POST.get('purpose', topic.purpose)
+       # topic.text = request.POST.get('text', topic.text)
+
+        
+        if not topic.title:
+            # Handle error: title cannot be empty
+            messages.error(request, "Error: The Topic Title cannot be empty. Please fill in the required field.")
+            return redirect('admin_page')
+
+        # Save changes to the database
+        topic.save()
+
+        return redirect('admin_page')
+
+    except Exception as e:
+        import traceback
+        # Print the full error stack to the terminal for debugging
+        traceback.print_exc() 
+        print(f"Error during topic operation (ID: {pk} if applicable): {e}")
+        print(f"POST Data Received: {request.POST}")
+        
+        return redirect('admin_page')
+
+
+def delete_topic_view(request, pk):
+    """Handles deleting a topic via standard POST form submission (from hidden form)."""
+    try:
+        # Get the Topic object using the primary key (pk)
+        topic = get_object_or_404(Topic, topic_id=pk)
+        topic.delete()
+        
+        return redirect('admin_page')
+    
+    except Exception as e:
+        print(f"Error during topic deletion (ID: {pk}): {e}")
+        return redirect('admin_page')
+    
 def adminlogin_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -16,7 +97,7 @@ def adminlogin_view(request):
 
         try:
             admin = Admins.objects.get(email=email)
-            if  password == admin.admin_password:  
+            if  check_password(password , admin.admin_password):  
                 full_name = f"{admin.first_name} {admin.last_name}"
                 request.session['full_name'] = f"{admin.first_name} {admin.last_name}"
                 request.session['email'] = admin.email
@@ -61,7 +142,7 @@ def setting_view(request):
         admin = Admins.objects.get(email=email_from_session)
     except Admins.DoesNotExist:
         messages.error(request, "User does not exist.")
-        return redirect('adminlogin')  # Ensure proper redirection
+        return redirect('adminlogin')  
 
     if request.method == "POST":
         # Get the data from the form
@@ -110,22 +191,141 @@ def get_full_name(request):
         except Admins.DoesNotExist:
             return ''  # Return an empty string if not found
     return ''  
+######################3
+
+def extract_student_info(search_term=None):
+    """Retrieves Students records from the database"""
+   
+    student_queryset = Students.objects.all() 
+
+    
+    if search_term:
+        # Filter for the term being present 
+        student_queryset = student_queryset.filter(
+            Q(first_name__icontains=search_term) |
+            Q(last_name__icontains=search_term) |
+            Q(email__icontains=search_term)
+        )
+    
+    student_queryset = student_queryset.order_by('last_name', 'first_name')
+        
+    std_list = []
+
+    # Loop through the filtered QuerySet
+    for user in student_queryset:
+        
+        # Combine names into full name
+        full_name = f"{user.first_name} {user.last_name}".strip()
+        
+        student_data = {
+            "id": user.student_id, 
+            "full_name": full_name,
+            "email": user.email,
+        }
+        std_list.append(student_data)
+
+    return std_list
 
 def users_view(request):
-    full_name = request.session.get('full_name', '')  
-    email = request.session.get('email', '')
+    """
+     view to display the users table.
+    """
+    #  Retrieve the search query from the URL parameters (GET request)
+    search_term = request.GET.get('search', '').strip()
+    
+    # Fetch student data
+    std_list = extract_student_info(search_term=search_term)
+    
+    # Retrieve session data (for Admin info display)
+    session_full_name = request.session.get('full_name', 'Admin User') 
+    
+    # 4. Build the context dictionary
     context = {
-        'full_name': full_name,
-        'email': email,
+        'full_name': session_full_name,
+        'student_records': std_list, 
+        'search_term': search_term, 
     }
+    
+    # 5. Render the template
     return render(request, 'users.html', context)
+
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+
+
+
+@require_http_methods(["POST"])
+def delete_student_view(request, pk):
+    """Handles deleting a student """
+    try:
+        # Get the student object or return a 404 error
+        student = get_object_or_404(Students, student_id=pk)
+        
+        # Perform the deletion
+        student.delete()
+        
+        # Redirect back to the user list page upon successful deletion
+        return redirect('users') 
+    
+    except Exception as e:
+        print(f"Error during student deletion (ID: {pk}): {e}")
+        return redirect('users')
+
+# --- UPDATE FUNCTION ---
+
+
+def update_student_view(request, pk):
+    """Handles updating student name/email via standard POST form submission."""
+    try:
+        # Retrieve data from the standard form submission dictionary (request.POST)
+        new_full_name = request.POST.get('full_name')
+        new_email = request.POST.get('email')
+        
+        student = get_object_or_404(Students, student_id=pk)
+
+        # --- Handle Full Name Split  ---
+        if not new_full_name or not new_email:
+            return redirect('users') 
+
+        name_parts = new_full_name.split(' ', 1)
+        new_first_name = name_parts[0]
+        new_last_name = name_parts[1] if len(name_parts) > 1 else "" 
+        
+        #  Update the model instance fields
+        student.first_name = new_first_name
+        student.last_name = new_last_name
+        student.email = new_email
+        
+        #  Save changes to the database
+        student.save()
+
+        # Redirect back to the main users list after success 
+        return redirect('users')
+
+    except Exception as e:
+        print(f"Error during student update (ID: {pk}): {e}")
+        return redirect('users')
+    
+#######################
 
 def admin_view(request):
     full_name = request.session.get('full_name', '') 
     email = request.session.get('email', '') 
+    topics_list = Topic.objects.all()
+    search_term = request.GET.get('search', '').strip()
+    if search_term:
+        topics_list = topics_list.filter(
+            Q(title__icontains=search_term) |
+            Q(summary__icontains=search_term) 
+        ).distinct()
+
+    print(f"Number of topics retrieved: {topics_list.count()}")
     context = {
         'full_name': full_name,
         'email': email,
+        'topics_list': topics_list ,
+        'search_term': search_term,
     }
     return render(request, 'admin_page.html', context)
 
@@ -197,37 +397,8 @@ def check_email(request):
         return JsonResponse({'exists': exists})
     return JsonResponse({'exists': False})
 
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth.hashers import make_password
-from .forms import SignupForm
-from .models import Students
 
-# def signup_view(request):
-#     if request.method == 'POST':
-#         form = SignupForm(request.POST)
 
-#         if form.is_valid():
-#             # Save the student instance with a hashed password
-#             student = Students(
-#                 student_password= form.cleaned_data['password'],
-#                 first_name=form.cleaned_data['first_name'],
-#                 last_name=form.cleaned_data['last_name'],
-#                 email=form.cleaned_data['email']
-#             )
-#             student.save()
-
-#             messages.success(request, "Account created successfully.")
-#             return redirect('login')  # Use the URL name or appropriate URL pattern
-
-#         else:
-#             for error in form.errors.values():
-#                 messages.error(request, error)
-
-#     else:
-#         form = SignupForm()
-
-#     return render(request, 'signup.html', {'form': form})
 def signup_view(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -235,7 +406,7 @@ def signup_view(request):
         if form.is_valid():
             # Create an instance of the student and hash the password
             student = Students(
-                student_password= form.cleaned_data['password'],  # Hashing the password
+                student_password= make_password(form.cleaned_data['password']),  
                 first_name=form.cleaned_data['first_name'],
                 last_name=form.cleaned_data['last_name'],
                 email=form.cleaned_data['email']
@@ -243,7 +414,7 @@ def signup_view(request):
             student.save()
 
             messages.success(request, "Account created successfully.")
-            return redirect('login')  # Redirect to the login page or appropriate URL pattern
+            return redirect('login')  # Redirect to the login page 
 
         else:
             # Display error messages for invalid form
@@ -264,24 +435,6 @@ def about_view(request):
     return render(request, 'about.html')
 
 
-# def login_view(request):
-#     if request.method == "POST":
-#         email = request.POST.get('email')
-#         password = request.POST.get('password')
-
-        
-#         try:
-#             user = Students.objects.get(email=email)
-#             if password == user.student_password:  # Verify password
-                
-#                 return redirect('user_page')  # Redirect to homepage
-#             else:
-#                 messages.error(request, "Invalid password.")
-#         except Students.DoesNotExist:
-#             messages.error(request, "User does not exist.")
-    
-#     return render(request, 'login.html')  # Render your login template
-
 
 
 def login_view(request):
@@ -291,9 +444,9 @@ def login_view(request):
 
         try:
             user = Students.objects.get(email=email)
-            if password == user.student_password:  # Verify password
+            if check_password(password, user.student_password)  :  # Verify password
                 # Store the full name in the session
-                request.session['full_name'] = f"{user.first_name} {user.last_name}"  # Adjust according to your model's field names
+                request.session['full_name'] = f"{user.first_name} {user.last_name}"  
                 request.session['email'] = user.email
                 return redirect('user_homepage')  # Redirect to user homepage
             else:
@@ -351,25 +504,6 @@ def role_view(request):
 #########
 
 
-# def setting_view(request):
-#     full_name = request.session.get('full_name', '')  
-#     context = {
-#         'full_name': full_name,
-#     }
-#     return render(request, 'setting.html', context)
-
-
-
-# def editprofile_view(request):
-#     full_name = request.session.get('full_name', '')  
-#     email = request.session.get('email', '')
-#     print("Full Name:", full_name)  # Debugging
-#     print("Email:", email)
-#     context = {
-#         'full_name': full_name,
-#         'email': email,
-#     }
-#     return render(request, 'editprofile.html', context)
 
 def editprofile_view(request):
     if request.method == "POST":
@@ -406,20 +540,6 @@ def editprofile_view(request):
     }
     return render(request, 'editprofile.html', context)
 
-
-
-
- 
-
-# def user_page_view(request):
-#     return render(request, 'user_page.html')
-
-# def user_page_view(request):
-#     full_name = request.session.get('full_name', '')  # Get full name from session
-#     context = {
-#         'full_name': full_name,
-#     }
-#     return render(request, 'user_page.html', context)
 
 
 
