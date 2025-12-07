@@ -34,5 +34,16 @@ urlpatterns = [
     path('api/saved-topics/', get_saved_topics, name='get_saved_topics'),
     path('api/notes/', get_notes, name='get_notes'),
     path('api/likes/', get_likes, name='get_likes'),
+
+
+
+
+
+
+    path('topic-view/<int:topic_id>/', topic_detail_view, name='generated_topic'),
+    
+    
+    path('generate/topic/', generate_html_view, name='generate_html'),
+    
     #path('topics/', topics_view, name='topics'),
 ]

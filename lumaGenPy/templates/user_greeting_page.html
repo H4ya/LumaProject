@@ -97,132 +97,42 @@
 </div>
 <div class="layout-content-container flex flex-col max-w-[1100px] flex-1"> 
     <h2 id="discover-topics" class="text-3xl font-bold leading-tight tracking-[-0.015em] px-4 pb-4 pt-8 text-center sm:text-left">Discover Our Topics</h2>
-<div id="topics-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-    <!-- Topic 1: Algorithms (ID: topic-101) -->
-    <a href="{% url 'algorthim' %}" data-topic-id="topic-101" class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
-        <div class="flex justify-between items-start">
-            <div class="transition-opacity duration-300 group-hover:opacity-0">
-                <span class="material-symbols-outlined text-4xl text-primary mb-2">code</span>
-                <p class="text-lg font-semibold">Algorithms</p>
-                <p class="text-sm font-normal text-subtext-light dark:text-subtext-dark mt-1">The secret sauce behind efficient problem-solving.</p>
+    <div id="topics-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+        
+        {% for topic in topic_list %} 
+        
+        <a href="{% url 'generated_topic' topic_id=topic.topic_id %}" 
+           data-topic-id="topic-{{ topic.topic_id }}" 
+           class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div class="flex justify-between items-start">
+                
+                <div class="transition-opacity duration-300 group-hover:opacity-0">
+                    <span class="material-symbols-outlined text-4xl text-primary mb-2">memory</span>
+                    <p class="text-lg font-semibold">{{ topic.title }}</p>
+                    <p class="text-sm font-normal text-subtext-light dark:text-subtext-dark mt-1">{{ topic.summary }}</p>
+                </div>
+                
+                <div class="absolute inset-0 p-5 bg-card-light dark:bg-card-dark opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col">
+                    <h3 class="text-lg font-semibold text-primary">Why it matters</h3>
+                    <p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">{{ topic.purpose }}</p>
+                </div>
+                
+                <div class="flex gap-2 z-10">
+                    <button class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                            onclick="event.preventDefault(); toggleLike('topic-{{ topic.id }}', this);">
+                        <span class="material-symbols-outlined text-xl">favorite</span>
+                    </button>
+                    <button class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                            onclick="event.preventDefault(); toggleSave('topic-{{ topic.id }}', this);">
+                        <span class="material-symbols-outlined text-xl">bookmark</span>
+                    </button>
+                </div>
+                
             </div>
-            <div class="absolute inset-0 p-5 bg-card-light dark:bg-card-dark opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col">
-                <h3 class="text-lg font-semibold text-primary">Why it matters</h3>
-                <p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">Algorithms power everything from your social media feed to GPS navigation, making them fundamental to modern technology.</p>
-            </div>
-            <div class="flex gap-2 z-10">
-                <button class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
-                        onclick="event.preventDefault(); toggleLike('topic-101', this);">
-                    <span class="material-symbols-outlined text-xl">favorite</span>
-                </button>
-                <button class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
-                        onclick="event.preventDefault(); toggleSave('topic-101', this);">
-                    <span class="material-symbols-outlined text-xl">bookmark</span>
-                </button>
-            </div>
-        </div>
-    </a>
-
-    <!-- Topic 2: Logic & Proof Techniques (ID: topic-102) -->
-    <a href="{% url 'logic_proof' %}" data-topic-id="topic-102" class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
-        <div class="flex justify-between items-start">
-            <div class="transition-opacity duration-300 group-hover:opacity-0">
-                <span class="material-symbols-outlined text-4xl text-primary mb-2">rule</span>
-                <p class="text-lg font-semibold">Logic & Proof Techniques</p>
-                <p class="text-sm font-normal text-subtext-light dark:text-subtext-dark mt-1">Building arguments that are verifiably correct.</p>
-            </div>
-            <div class="absolute inset-0 p-5 bg-card-light dark:bg-card-dark opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col">
-                <h3 class="text-lg font-semibold text-primary">Why it matters</h3>
-                <p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">From law to computer science, rigorous logic is crucial for creating sound arguments and bug-free software.</p>
-            </div>
-            <div class="flex gap-2 z-10">
-                <button class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
-                        onclick="event.preventDefault(); toggleLike('topic-102', this);">
-                    <span class="material-symbols-outlined text-xl">favorite</span>
-                </button>
-                <button class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
-                        onclick="event.preventDefault(); toggleSave('topic-102', this);">
-                    <span class="material-symbols-outlined text-xl">bookmark</span>
-                </button>
-            </div>
-        </div>
-    </a>
-
-    <!-- Topic 3: Software Engineering (ID: topic-103) -->
-    <a href="{% url 'software_eng' %}" data-topic-id="topic-103" class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
-        <div class="flex justify-between items-start">
-            <div class="transition-opacity duration-300 group-hover:opacity-0">
-                <span class="material-symbols-outlined text-4xl text-primary mb-2">engineering</span>
-                <p class="text-lg font-semibold">Software Engineering</p>
-                <p class="text-sm font-normal text-subtext-light dark:text-subtext-dark mt-1">The art of building robust and scalable software.</p>
-            </div>
-            <div class="absolute inset-0 p-5 bg-card-light dark:bg-card-dark opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col">
-                <h3 class="text-lg font-semibold text-primary">Why it matters</h3>
-                <p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">It's the discipline that allows teams to build complex applications like your favorite apps and websites reliably.</p>
-            </div>
-            <div class="flex gap-2 z-10">
-                <button class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
-                        onclick="event.preventDefault(); toggleLike('topic-103', this);">
-                    <span class="material-symbols-outlined text-xl">favorite</span>
-                </button>
-                <button class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
-                        onclick="event.preventDefault(); toggleSave('topic-103', this);">
-                    <span class="material-symbols-outlined text-xl">bookmark</span>
-                </button>
-            </div>
-        </div>
-    </a>
-
-    <!-- Topic 4: Operating Systems (ID: topic-104) -->
-    <a href="{% url 'operating_systems' %}" data-topic-id="topic-104" class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
-        <div class="flex justify-between items-start">
-            <div class="transition-opacity duration-300 group-hover:opacity-0">
-                <span class="material-symbols-outlined text-4xl text-primary mb-2">memory</span>
-                <p class="text-lg font-semibold">Operating Systems</p>
-                <p class="text-sm font-normal text-subtext-light dark:text-subtext-dark mt-1">The core software that manages your computer.</p>
-            </div>
-            <div class="absolute inset-0 p-5 bg-card-light dark:bg-card-dark opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col">
-                <h3 class="text-lg font-semibold text-primary">Why it matters</h3>
-                <p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">Understanding OS principles helps you write better, more efficient code that works with the hardware, not against it.</p>
-            </div>
-            <div class="flex gap-2 z-10">
-                <button class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
-                        onclick="event.preventDefault(); toggleLike('topic-104', this);">
-                    <span class="material-symbols-outlined text-xl">favorite</span>
-                </button>
-                <button class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
-                        onclick="event.preventDefault(); toggleSave('topic-104', this);">
-                    <span class="material-symbols-outlined text-xl">bookmark</span>
-                </button>
-            </div>
-        </div>
-    </a>
-
-    <!-- Topic 5: Computer Organization (ID: topic-105) -->
-    <a href="{% url 'computer_org' %}" data-topic-id="topic-105" class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
-        <div class="flex justify-between items-start">
-            <div class="transition-opacity duration-300 group-hover:opacity-0">
-                <span class="material-symbols-outlined text-4xl text-primary mb-2">developer_board</span>
-                <p class="text-lg font-semibold">Computer Organization</p>
-                <p class="text-sm font-normal text-subtext-light dark:text-subtext-dark mt-1">Understanding what happens under the hood.</p>
-            </div>
-            <div class="absolute inset-0 p-5 bg-card-light dark:bg-card-dark opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col">
-                <h3 class="text-lg font-semibold text-primary">Why it matters</h3>
-                <p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">Knowing how hardware and software interact is key to optimizing performance and debugging complex issues.</p>
-            </div>
-            <div class="flex gap-2 z-10">
-                <button class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
-                        onclick="event.preventDefault(); toggleLike('topic-105', this);">
-                    <span class="material-symbols-outlined text-xl">favorite</span>
-                </button>
-                <button class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
-                        onclick="event.preventDefault(); toggleSave('topic-105', this);">
-                    <span class="material-symbols-outlined text-xl">bookmark</span>
-                </button>
-            </div>
-        </div>
-    </a>
-</div>
+        </a>
+        
+        {% endfor %}
+    </div>
 </div>
 </div>
 </div>

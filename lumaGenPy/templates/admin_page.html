@@ -179,6 +179,7 @@
 </main>
 </div>
 
+    
 <div id="addTopicModal" 
     class="fixed inset-0 bg-black/40 flex items-center justify-center hidden z-50" 
     onclick="if (event.target.id === 'addTopicModal') closeModal()">
@@ -199,6 +200,7 @@
 
         <div class="flex justify-end gap-3 mt-4">
           <button type="button" onclick="closeModal()" class="px-4 py-2 text-sm font-medium rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">Cancel</button>
+          
           <button type="submit" class="px-4 py-2 text-sm font-medium rounded-lg bg-accent text-white hover:bg-accent-hover transition-colors">Save Topic</button>
         </div>
     </form>
@@ -241,8 +243,8 @@
 <div id="editTopicModal" 
     class="fixed inset-0 bg-black/40 flex items-center justify-center hidden z-50" 
     onclick="if (event.target.id === 'editTopicModal') closeEditModal()">
-  <div class="bg-white dark:bg-slate-900 p-6 rounded-xl w-full max-w-lg mx-4 shadow-xl transform transition-all duration-300 scale-100">
-    <h2 class="text-xl font-bold mb-4 text-slate-900 dark:text-white">Update Topic</h2>
+  <div class="bg-white dark:bg-slate-900 p-6 rounded-xl w-full max-w-lg mx-4 shadow-xl transform transition-all duration-300 scale-100">
+    <h2 class="text-xl font-bold mb-4 text-slate-900 dark:text-white">Update Topic</h2>
     
     <form method="POST" id="editTopicForm" action=""> 
         {% csrf_token %}
@@ -287,7 +289,7 @@ function openModal() {
         document.getElementById('editTopicTitle').value = title;
         document.getElementById('editTopicSummary').value = summary;
         document.getElementById('editTopicPurpose').value = purpose;
-        document.getElementById('editTopicText').value = text; // Hidden text field
+        //document.getElementById('editTopicText').value = text; // Hidden text field
         document.getElementById('edit_topic_id').value = id;
         
         
@@ -327,6 +329,7 @@ function submitDeleteTopicForm() {
     if (searchInput) {
         
     }
+
 </script>
 </body>
 </html>

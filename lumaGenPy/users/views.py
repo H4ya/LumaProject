@@ -7,8 +7,43 @@ from .forms import SignupForm
 from django.http import JsonResponse
 from django.contrib.auth import logout
 from django.contrib.auth.hashers import make_password ,check_password
+import datetime
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 
 
+def generate_html_view(request):
+    if request.method == 'POST':
+        # 1. Gather data from the form POST request
+        title = request.POST.get('title', 'Untitled Topic')
+        summary = request.POST.get('summary', 'No summary.')
+        purpose = request.POST.get('purpose', 'No purpose.')
+        topic_list=Topic.objects.all()
+
+        # 2. Context for rendering the download template
+        context = {
+            'title': title,
+            'summary': summary,
+            'purpose': purpose,
+
+            # Add any other data your complex template needs (e.g., logo URLs)
+        }
+
+        # 3. Render the full HTML content from the dedicated template
+        html_content = render_to_string('generated_topic.html', context)
+
+        # 4. Create the file name and the HTTP response
+        filename = f"{title.replace(' ', '_')}_{datetime.date.today()}.html"
+
+        response = HttpResponse(html_content, content_type='text/html')
+
+        # 5. Set the header to force the browser to download the file
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+        return response
+
+    # If accessed by GET or anything else, redirect or return error
+    return redirect('admin_page')
 
 ################################--Admin related views-- ##########################################
 def create_topic_view(request):
@@ -334,9 +369,11 @@ def admin_view(request):
 def user_homepage_view(request):
     full_name = request.session.get('full_name', '')  
     email = request.session.get('email', '')
+    topics_list = Topic.objects.all()
     context = {
         'full_name': full_name,
         'email': email,
+        'topic_list':topics_list
     }
     return render(request, 'user_greeting_page.html', context)
 
@@ -564,3 +601,34 @@ def user_page_view(request):
     }
     
     return render(request, 'user_page.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def topic_detail_view(request, topic_id):
+    
+    topic = get_object_or_404(Topic, topic_id=topic_id)
+    
+    context = {
+        
+        'topic_detail': topic 
+    }
+    
+    return render(request, 'generated_topic.html', context)
+
