@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.db.models import Q
 from .models import *
 import array as arr
+
+# Edited by wesam
 from .forms import SignupForm
 from django.http import JsonResponse
 from django.contrib.auth import logout
@@ -340,6 +342,7 @@ def user_homepage_view(request):
     }
     return render(request, 'user_greeting_page.html', context)
 
+# Start of edit wesam - get_saved_topics function
 def get_saved_topics(request):
     student_id = request.session.get('student_id')
     saved_topics = Save.objects.filter(std_id=student_id)
@@ -374,6 +377,7 @@ def get_notes(request):
 
     return JsonResponse(data, safe=False)
 
+# Start of edit wesam - get_likes function
 def get_likes(request):
     student_id = request.session.get('student_id')
     liked_content = Like.objects.filter(std_id=student_id)
@@ -446,6 +450,7 @@ def login_view(request):
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
+        saved = request.POST.get()
 
         try:
             user = Students.objects.get(email=email)
@@ -571,7 +576,7 @@ def user_page_view(request):
     
     return render(request, 'user_page.html', context)
 
-
+# Start of edit wesam - get_saved_topics API function
 # API endpoints for fetching user data (JSON)
 def get_saved_topics(request):
     student_id = request.session.get('student_id')
@@ -623,7 +628,7 @@ def get_notes(request):
     ]
     return JsonResponse(data, safe=False)
 
-
+# Start of edit wesam - get_likes API function
 def get_likes(request):
     student_id = request.session.get('student_id')
     if not student_id:
@@ -655,7 +660,7 @@ def get_likes(request):
     
     return JsonResponse(data, safe=False)
 
-
+# Start of edit wesam - toggle_save function
 def toggle_save(request):
     if request.method == 'POST':
         student_id = request.session.get('student_id')
@@ -685,7 +690,7 @@ def toggle_save(request):
     
     return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
 
-
+# Start of edit wesam - toggle_like function
 def toggle_like(request):
     if request.method == 'POST':
         student_id = request.session.get('student_id')
@@ -714,6 +719,8 @@ def toggle_like(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     
     return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
+
+# End of edit wesam
 
 
 def save_note(request):

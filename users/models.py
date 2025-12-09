@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+# Edited by wesam
+
 class Admins(models.Model):
     admin_id = models.AutoField(primary_key=True)
     admin_password = models.TextField()  
@@ -62,7 +64,7 @@ class Topic(models.Model):
     def __str__(self):
         return self.title
 
-
+# Start of edit wesam - Save model
 class Save(models.Model):
     std_id = models.IntegerField(primary_key=True)
     topic_id = models.IntegerField()
@@ -75,6 +77,7 @@ class Save(models.Model):
     def __str__(self):
         return f"Student {self.std_id} saved topic {self.topic_id}"
 
+# End of edit wesam
 
 # class Like(models.Model):
 #     student = models.ForeignKey(Students, on_delete=models.CASCADE,db_column='std_id', related_name='liked_topics')
@@ -86,6 +89,8 @@ class Save(models.Model):
 
 #     def __str__(self):
 #         return f"{self.student} liked {self.topic}"
+
+# Start of edit wesam - Like model
 class Like(models.Model):
     std_id = models.IntegerField(primary_key=True)
     topic_id = models.IntegerField()
@@ -98,6 +103,7 @@ class Like(models.Model):
     def __str__(self):
         return f"Student {self.std_id} liked topic {self.topic_id}"
 
+# End of edit wesam
 
 class Note(models.Model):
     note_id = models.AutoField(primary_key=True)

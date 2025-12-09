@@ -1,6 +1,8 @@
 
 <!DOCTYPE html>
-<html class="light" lang="en"><head>
+<html class="light" lang="en">
+<!-- Edited by wesam -->
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Luma - Personalized Homepage</title>
@@ -99,6 +101,7 @@
 </div>
 <div class="layout-content-container flex flex-col max-w-[1100px] flex-1"> 
     <h2 id="discover-topics" class="text-3xl font-bold leading-tight tracking-[-0.015em] px-4 pb-4 pt-8 text-center sm:text-left">Discover Our Topics</h2>
+<!-- Start of edit wesam - Restructured topic cards with like/save buttons -->
 <div id="topics" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
     <div class="topic-card-wrapper">
         <a href="{% url 'algorthim' %}" class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-t-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700 border-b-0">
@@ -230,6 +233,7 @@
         </div>
     </div>
 </div>
+<!-- End of edit wesam - Topic cards -->
 </div>
 </div>
 </div>
@@ -317,6 +321,7 @@
         }, 3000);
     }
 
+    // Start of edit wesam - Like/Save toggle functions with toast notifications and persistent state
     // Toggle like function for greeting page
     function toggleLikeGreeting(topicId, buttonElement) {
         console.log('Toggling like for topic:', topicId);
@@ -395,7 +400,49 @@
         });
     }
 
+    // Load user's saved and liked topics on page load
+    async function loadUserTopicStates() {
+        try {
+            // Fetch liked topics
+            const likesResponse = await fetch("{% url 'get_likes' %}");
+            const likes = await likesResponse.json();
+            const likedTopicIds = likes.map(like => like.topic_id);
+            
+            // Fetch saved topics
+            const savedResponse = await fetch("{% url 'get_saved_topics' %}");
+            const saved = await savedResponse.json();
+            const savedTopicIds = saved.map(save => save.topic_id);
+            
+            // Update like buttons
+            document.querySelectorAll('[onclick^="toggleLikeGreeting"]').forEach(button => {
+                const topicId = parseInt(button.getAttribute('onclick').match(/\d+/)[0]);
+                if (likedTopicIds.includes(topicId)) {
+                    const icon = button.querySelector('.material-symbols-outlined');
+                    icon.style.fontVariationSettings = "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                    icon.classList.add('text-red-500');
+                }
+            });
+            
+            // Update save buttons
+            document.querySelectorAll('[onclick^="toggleSaveGreeting"]').forEach(button => {
+                const topicId = parseInt(button.getAttribute('onclick').match(/\d+/)[0]);
+                if (savedTopicIds.includes(topicId)) {
+                    const icon = button.querySelector('.material-symbols-outlined');
+                    icon.style.fontVariationSettings = "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                    icon.classList.add('text-primary');
+                }
+            });
+        } catch (error) {
+            console.error('Error loading topic states:', error);
+        }
+    }
+
+    // Call on page load
+    document.addEventListener('DOMContentLoaded', loadUserTopicStates);
+    // End of edit wesam - Like/Save toggle functions
+
     
 </script>
+<!-- End of edit wesam -->
 
 </body></html>

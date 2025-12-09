@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Edited by wesam -->
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -98,7 +99,27 @@
             </div>
         </div>
 
-<footer class="w-full bg-background-light border-t border-gray-200/60 mt-16">
+
+
+
+<a class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div x-show="activeTab === 'saved'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6" id="saved-topics">
+        </div>
+
+    <div x-show="activeTab === 'notes'" class="flex flex-col gap-6 pt-6" id="notes">
+        </div>
+
+    <div x-show="activeTab === 'liked'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6" id="likes">
+        </div>
+
+    </a>
+    <!-- <footer class="w-full bg-background-light border-t border-gray-200/60 mt-16">
+            <div class="max-w-5xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-sm text-text-secondary">© 2025 Luma. All rights reserved.</p>
+            </div>
+        </footer> -->
+    <footer class="w-full bg-background-light border-t border-gray-200/60 mt-16">
 <div class="max-w-5xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
 <div class="flex justify-center items-center flex-wrap gap-x-6 gap-y-2 mb-6">
 <a class="text-sm text-text-secondary hover:text-primary transition-colors" href="#">About</a>
@@ -126,29 +147,11 @@
 </div>
 <p class="text-sm text-text-secondary">© 2025 Luma. All rights reserved.</p>
 </div>
-
-
-<a class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    
-    <div x-show="activeTab === 'saved'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6" id="saved-topics">
-        </div>
-
-    <div x-show="activeTab === 'notes'" class="flex flex-col gap-6 pt-6" id="notes">
-        </div>
-
-    <div x-show="activeTab === 'liked'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6" id="likes">
-        </div>
-
-    </a>
-    <footer class="w-full bg-background-light border-t border-gray-200/60 mt-16">
-            <div class="max-w-5xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
-                <p class="text-sm text-text-secondary">© 2025 Luma. All rights reserved.</p>
-            </div>
-        </footer>
     
 </div>
 </div>
 <script>
+    // Start of edit wesam - fetchSavedTopics function (redesigned card display)
     async function fetchSavedTopics() {
         try {
             const response = await fetch("{% url 'get_saved_topics' %}");
@@ -229,11 +232,13 @@
             });
         } catch (error) {
             console.error('Error fetching notes:', error);
-            document.getElementById('notes').innerHTML = '<p class="text-red-500 text-center py-8">Failed to load notes</p>';
+            document.getElementById('saved-topics').innerHTML = '<p class="text-red-500 text-center py-8">Failed to load saved topics</p>';
         }
     }
+    // End of edit wesam - fetchSavedTopics function
 
-    async function fetchLikes() {
+    // Start of edit wesam - fetchLikes function (redesigned card display)
+    async function fetchNotes() {
         try {
             const response = await fetch("{% url 'get_likes' %}");
             const likes = await response.json();
@@ -264,6 +269,7 @@
             console.error('Error fetching likes:', error);
         }
     }
+    // End of edit wesam - fetchLikes function
 
     // Delete note function
     async function deleteNote(noteId) {
@@ -373,9 +379,9 @@
         fetchLikes();
     });
 </script>
-
         
     <script defer src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
+    <!-- End of edit wesam -->
 
 </body>
 </html>

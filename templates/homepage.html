@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html class="light" lang="en">
-
+<!-- Edited by wesam -->
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -120,6 +120,7 @@
                         <h2 id="discover-topics"
                             class="text-3xl font-bold leading-tight tracking-[-0.015em] px-4 pb-4 pt-8 text-center sm:text-left">
                             Discover Our Topics</h2>
+                        <!-- Start of edit wesam - Restructured topic cards with like/save buttons -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
                             <div class="topic-card-wrapper">
                                 <a href="{% url 'algorthim' %}" onclick="checkAccess(event, this.href)"
@@ -307,6 +308,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- End of edit wesam - Topic cards -->
                     </main>
                 </div>
             </div>
@@ -449,6 +451,7 @@
             }, 3000);
         }
 
+        // Start of edit wesam - Like/Save toggle functions with toast notifications
         // --- FUNCTIONS FOR LIKE/SAVE BUTTONS (Also require login) ---
         function toggleLike(topicId, buttonElement) {
             const isLoggedIn = {% if request.session.student_id %}true{% else %}false{% endif %};
@@ -529,8 +532,10 @@
                 showToast('Failed to save topic. Please try again.', 'error');
             });
         }
+        // End of edit wesam - Like/Save toggle functions
 
     </script>
+    <!-- End of edit wesam -->
 
 </body>
 
