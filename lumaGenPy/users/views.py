@@ -8,9 +8,10 @@ from django.contrib.auth.hashers import make_password ,check_password
 from django.db import transaction
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.db import IntegrityError
+from django.urls import reverse
 
 
-#**************########################3---------------------arrange ----------------#########################********************
+#**************########################3---------------------Main views ----------------#########################********************
 
 
 def topic_detail_view(request, topic_id):
@@ -644,6 +645,7 @@ def get_saved_topics(request):
             data.append({
                 'topic_id': topic.topic_id,
                 'title': topic.title,
+                'url': reverse('generated_topic', args=[topic.topic_id]),
             })
         except Topic.DoesNotExist:
             continue
@@ -684,6 +686,7 @@ def get_likes(request):
             data.append({
                 'topic_id': topic.topic_id,
                 'title': topic.title,
+                'url': reverse('generated_topic', args=[topic.topic_id]),
             })
         except Topic.DoesNotExist:
             continue

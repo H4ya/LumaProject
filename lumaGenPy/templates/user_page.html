@@ -146,7 +146,7 @@
 <script>
     // --- Data Fetching Functions ---
 
-    // Strips time component: Only shows date.
+    
     function formatDate(dateString) {
         const date = new Date(dateString);
         return date.toLocaleString('en-US', { 
@@ -170,7 +170,7 @@
             }
 
             savedTopics.forEach(topic => {
-                // Remove time component
+               
                 const formattedDate = formatDate(topic.date_saved || new Date()); 
                 
                 container.innerHTML += `
@@ -201,7 +201,7 @@
             }
 
             notes.forEach(note => {
-                // Remove time component
+               
                 const formattedDate = formatDate(note.last_edited);
                 const contentForCancel = note.content.replace(/`/g, '\\`');
 
@@ -242,7 +242,7 @@
             }
 
             likes.forEach(content => {
-                // Remove time component
+               
                 const formattedDate = formatDate(content.date_liked || new Date());
                 
                 container.innerHTML += `
