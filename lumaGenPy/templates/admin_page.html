@@ -88,10 +88,11 @@
 <main class="flex flex-1 flex-col p-6 lg:p-8">
 <div class="flex flex-wrap items-center justify-between gap-4">
 <h1 class="text-slate-900 text-3xl font-black leading-tight tracking-[-0.033em] dark:text-white">Manage Topics</h1>
-<button onclick="openModal()" class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-accent text-white h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em] transition-all duration-300 hover:bg-accent-hover hover:scale-105 active:scale-95">
+<a href="{% url 'add_topic' %}" 
+   class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-accent text-white h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em] transition-all duration-300 hover:bg-accent-hover hover:scale-105 active:scale-95">
     <span class="material-symbols-outlined">add</span>
     <span class="truncate">Add New Topic</span>
-</button>
+</a>
 
 </div>
 <div class="mt-6 flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
@@ -132,13 +133,15 @@
     </form>
 </form>
 </div>
-<div class="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+<div class="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-white dark:bg-slate-800 dark:bg-slate-900">
     <div class="overflow-x-auto">
         <div class="max-h-64 overflow-y-auto">
             <table class="w-full text-left text-sm">
                 <thead class="border-b border-slate-200 bg-slate-50 text-xs uppercase text-slate-500 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400 sticky top-0 z-10">
                     <tr>
                         <th class="px-6 py-3 font-medium" scope="col">Title</th>
+                        <th class="px-6 py-3 font-medium" scope="col">Status</th>
+                        <th class="px-6 py-3 font-medium" scope="col">Last Modified</th>
                         <th class="px-6 py-3 font-medium text-right" scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -146,14 +149,38 @@
                     {% if topics_list %}
                     {% for topic in topics_list %}
                     <tr class="border-b border-slate-200 transition-colors duration-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
+                        
                         <th class="whitespace-nowrap px-6 py-4 font-medium text-slate-900 dark:text-white" scope="row">
                             {{ topic.title }}
                         </th>
 
+                        <td class="px-6 py-4">
+                            {% if topic.status == 'Published' %}
+                                <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800 dark:bg-green-700/50 dark:text-green-300">
+                                    Published
+                                </span>
+                            {% elif topic.status == 'Draft' %}
+                                <span class="inline-flex items-center rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-700/50 dark:text-yellow-300">
+                                    Draft
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-800 dark:bg-slate-700 dark:text-slate-400">
+                                    {{ topic.status|default:"N/A" }}
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td class="px-6 py-4 text-slate-700 dark:text-slate-300">
+                            {{ topic.last_modified|date:"Y-m-d" }}
+                        </td>
+
                         <td class="px-6 py-4 text-right">
                             <div class="flex justify-end gap-2">
-                                <button type="button" onclick="openEditModal('{{ topic.topic_id }}', '{{ topic.title }}', '{{ topic.summary|default:'' }}', '{{ topic.purpose|default:'' }}', '{{ topic.text|default:'' }}')" 
-                                        class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-accent/10 hover:text-accent hover:scale-110 dark:text-slate-400 dark:hover:bg-accent-dark/10 dark:hover:text-accent-dark" title="Edit Topic">
+                                
+                                <button type="button" 
+                                    onclick="openUpdate('{{ topic.topic_id }}')" 
+                                     class="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-accent/10 hover:text-accent hover:scale-110 dark:text-slate-400 dark:hover:bg-accent-dark/10 dark:hover:text-accent-dark" 
+                                     title="Edit Topic">
                                     <span class="material-symbols-outlined">edit</span>
                                 </button>
                                 <button type="button" onclick="confirmDelete('{{ topic.topic_id }}', '{{ topic.title }}')"
@@ -166,7 +193,7 @@
                     {% endfor %}
                     {% else %}
                     <tr class="border-b border-slate-200 dark:border-slate-800">
-                        <td colspan="2" class="px-6 py-8 text-center text-sm text-subtle-light dark:text-subtle-dark">
+                        <td colspan="4" class="px-6 py-8 text-center text-sm text-slate-500 dark:text-slate-400">
                             No topics found in the database.
                         </td>
                     </tr>
@@ -186,7 +213,7 @@
   <div class="bg-white dark:bg-slate-900 p-6 rounded-xl w-full max-w-lg mx-4 shadow-xl transform transition-all duration-300 scale-100">
     <h2 class="text-xl font-bold mb-4 text-slate-900 dark:text-white">Add New Topic</h2>
     
-    <form method="POST" action="{% url 'create_topic' %}"> 
+    <form method="POST" action="{% url 'add_topic' %}"> 
         {% csrf_token %}
         <div class="flex flex-col gap-3">
           
@@ -272,39 +299,54 @@
 
 
 <script>
-function openModal() {
-      document.getElementById("addTopicModal").classList.remove("hidden");
+function openUpdate(topicId) {
+    //  Check if topicId is valid
+    if (!topicId) {
+        console.error("Error: Topic ID is missing for redirection.");
+        alert("Cannot open edit page: Topic ID missing.");
+        return;
     }
 
-    function closeModal() {
-      document.getElementById("addTopicModal").classList.add("hidden");
-    }
-
+    //  Generate the URL
+    const editUrl = "{% url 'edit_topic' topic_id=99999 %}".replace('99999', topicId);
     
-    function openEditModal(id, title, summary, purpose, text) {
-        
-        const updateUrl = `{% url 'update_topic' pk=12345 %}`.replace('12345', id);
-        document.getElementById('editTopicForm').action = updateUrl;
-        
-        document.getElementById('editTopicTitle').value = title;
-        document.getElementById('editTopicSummary').value = summary;
-        document.getElementById('editTopicPurpose').value = purpose;
-        //document.getElementById('editTopicText').value = text; // Hidden text field
-        document.getElementById('edit_topic_id').value = id;
-        
-        
-        document.getElementById('editTopicModal').classList.remove('hidden');
+    //  Perform the redirect (GET request)
+    window.location.href = editUrl;
+} 
+function openEditModal(id, title, subtitle, purpose, text) { 
+    //  Set the form action URL dynamically
+    const updateUrl = `{% url 'update_topic' topic_id=12345 %}`.replace('12345', id); 
+   document.getElementById('editTopicForm').action = updateUrl;
+    
+    //  Populate the input fields in the modal
+    document.getElementById('editTopicTitle').value = title;
+    
+    // FIX: Target the 'editTopicSubtitle' ID
+    const subtitleField = document.getElementById('editTopicSubtitle');
+    if (subtitleField) {
+        subtitleField.value = subtitle;
     }
+    
+    document.getElementById('editTopicPurpose').value = purpose;
+    
+    // Handle the hidden topic ID and text field
+    document.getElementById('edit_topic_id').value = id;
+    document.getElementById('editTopicText').value = text;
+    
+    //  Display the modal
+    document.getElementById('editTopicModal').classList.remove('hidden');
+}
 
-    function closeEditModal() {
-        document.getElementById('editTopicModal').classList.add('hidden');
-    }
 
-    function confirmDelete(id, title) {
+function closeEditModal() {
+   document.getElementById('editTopicModal').classList.add('hidden');
+}
+
+function confirmDelete(id, title) {
   
     document.getElementById('delete_topic_name_display').textContent = title;
 
-    
+ 
     const deleteForm = document.getElementById('simpleDeleteForm');
     deleteForm.action = `{% url 'delete_topic' pk=12345 %}`.replace('12345', id); 
     document.getElementById('delete_topic_id_hidden').value = id; 
@@ -317,17 +359,16 @@ function closeDeleteModal() {
 }
 
 function submitDeleteTopicForm() {
-   
+
     closeDeleteModal();
-    
-    
+
     document.getElementById('simpleDeleteForm').submit();
 }
-    
-    // --- SEARCH LOGIC ---
+
+     // SEARCH 
     const searchInput = document.querySelector("input[name='search']");
     if (searchInput) {
-        
+
     }
 
 </script>

@@ -56,6 +56,9 @@
     </style>
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+
+    <!-- Toast Notification Container -->
+<div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
 <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
 <div class="layout-container flex h-full grow flex-col">
 <div class="px-4 sm:px-8 md:px-20 lg:px-40 flex flex-1 justify-center py-5">
@@ -73,8 +76,11 @@
 <a class="text-sm font-medium hover:text-primary-dark transition-colors" href="#discover-topics">Topics</a>
 
 <div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
-<img alt="User avatar" onclick="openUserProfile()" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ1xF8XxoQNcnmX-Ggzu_va85TeZMt6JGUmqm7QpACEXQ1ElVPdweMfHtUZqpMiQCs6fxmUqvZ-MGj4UbqDxKsCvjzFKz30zvQDpycwEGJMvDEv1HN842Pxsm3DrGVy8qEcw2tDebKZq9_WuBl2_HrCGorqKDZvqGTHK5zTJ7sEBzgD6boxkgTTriXwMzxGsgLGrLT74yVRmAxjeFF9NBynIgNVf0naE_tG7OUYGj4J2LGaq7_PJeMvWx7ZXlBjUB8eD6JeRq6PJLJ"/>
+<!-- <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+<img alt="User avatar" onclick="openUserProfile()" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ1xF8XxoQNcnmX-Ggzu_va85TeZMt6JGUmqm7QpACEXQ1ElVPdweMfHtUZqpMiQCs6fxmUqvZ-MGj4UbqDxKsCvjzFKz30zvQDpycwEGJMvDEv1HN842Pxsm3DrGVy8qEcw2tDebKZq9_WuBl2_HrCGorqKDZvqGTHK5zTJ7sEBzgD6boxkgTTriXwMzxGsgLGrLT74yVRmAxjeFF9NBynIgNVf0naE_tG7OUYGj4J2LGaq7_PJeMvWx7ZXlBjUB8eD6JeRq6PJLJ"/> -->
+<div onclick="openUserProfile()" class="rounded-full size-10 bg-primary/20 flex items-center justify-center" data-alt="Generic user profile icon">
+                    <span class="material-symbols-outlined text-primary !text-2xl">person</span>
+                
 </div>
 <a class="text-sm font-medium text-primary border border-primary rounded-full px-4 py-1.5 bg-card-light hover:bg-primary hover:text-card-light transition-colors duration-300" href="{% url 'homepage' %}">Sign Out</a>
 </div>
@@ -100,38 +106,50 @@
     <div id="topics-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
         
         {% for topic in topic_list %} 
+        {% if topic.status == 'Published' %}
         
-        <a href="{% url 'generated_topic' topic_id=topic.topic_id %}" 
-           data-topic-id="topic-{{ topic.topic_id }}" 
-           class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
-            <div class="flex justify-between items-start">
+        <div class="topic-card group relative flex flex-col gap-4 p-5 bg-card-light dark:bg-card-dark rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
+            
+            <a href="{% url 'generated_topic' topic_id=topic.topic_id %}"
+                title="View {{ topic.title }}"
+                class="absolute inset-0 z-10" 
+                data-topic-id="{{ topic.topic_id }}" onclick="checkAccess(event, this.href)">
                 
-                <div class="transition-opacity duration-300 group-hover:opacity-0">
-                    <span class="material-symbols-outlined text-4xl text-primary mb-2">memory</span>
+                <div class="transition-opacity duration-300 group-hover:opacity-0 p-5">
+                    <span class="material-symbols-outlined text-4xl text-primary mb-2">{{ topic.icon }}</span>
                     <p class="text-lg font-semibold">{{ topic.title }}</p>
-                    <p class="text-sm font-normal text-subtext-light dark:text-subtext-dark mt-1">{{ topic.summary }}</p>
                 </div>
                 
-                <div class="absolute inset-0 p-5 bg-card-light dark:bg-card-dark opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col">
+                <div class="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 flex flex-col p-5">
                     <h3 class="text-lg font-semibold text-primary">Why it matters</h3>
                     <p class="text-sm text-subtext-light dark:text-subtext-dark mt-2">{{ topic.purpose }}</p>
                 </div>
+            </a>
+            
+            <div class="flex gap-2 absolute top-5 right-5 z-20"> 
                 
-                <div class="flex gap-2 z-10">
-                    <button class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
-                            onclick="event.preventDefault(); toggleLike('topic-{{ topic.id }}', this);">
-                        <span class="material-symbols-outlined text-xl">favorite</span>
-                    </button>
-                    <button class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
-                            onclick="event.preventDefault(); toggleSave('topic-{{ topic.id }}', this);">
-                        <span class="material-symbols-outlined text-xl">bookmark</span>
-                    </button>
-                </div>
+                <button type="button" 
+                    class="like-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                    onclick="toggleLikeGreeting('{{ topic.topic_id }}', this)">
+                    <span class="material-symbols-outlined text-xl">favorite</span>
+                </button>
                 
+                <button type="button" 
+                    class="save-button p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-subtext-light dark:text-subtext-dark transition-colors"
+                    onclick="toggleSaveGreeting('{{ topic.topic_id }}', this)">
+                    <span class="material-symbols-outlined text-xl">bookmark</span>
+                </button>
             </div>
-        </a>
-        
+            
+            <div class="invisible">
+                <span class="material-symbols-outlined text-4xl text-primary mb-2">{{ topic.icon }}</span>
+                <p class="text-lg font-semibold">{{ topic.title }}</p>
+            </div>
+
+        </div>
+        {% endif %}
         {% endfor %}
+        
     </div>
 </div>
 </div>
@@ -162,169 +180,169 @@
 </svg>
 </a>
 </div>
-<p class="text-sm text-subtext-light dark:text-subtext-dark">© 2024 Luma. All rights reserved.</p>
+<p class="text-sm text-subtext-light dark:text-subtext-dark">© 2025 Luma. All rights reserved.</p>
 </footer>
 </div>
 </div>
 </div>
 
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // Global variables for Firebase services
-    let db;
-    let auth;
-    let userId = null;
-    let isAuthReady = false;
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-    // showLoginModal() function removed
-
-    // --- Firebase Initialization and Auth ---
-    async function initFirebase() {
-        try {
-            const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-             setLogLevel('debug'); // Uncomment for debugging Firestore rules/access
-
-            const __initial_auth_token = typeof window.__initial_auth_token !== 'undefined' ? window.__initial_auth_token : undefined;
-
-            if (__initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                // Sign in anonymously to ensure userId is always available for saving/liking
-                await signInAnonymously(auth); 
-            }
-
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    userId = user.uid;
-                    console.log("Authenticated with UID:", userId);
-                    isAuthReady = true;
-                    // Start listening for real-time changes
-                    setupRealtimeListeners();
-                } else {
-                    // This block should theoretically not run if signInAnonymously succeeds
-                    userId = null; 
-                    isAuthReady = true;
-                    console.log("User signed out or failed to sign in.");
-                }
-            });
-
-        } catch (error) {
-            console.error("Firebase initialization or authentication failed:", error);
-            isAuthReady = true; 
-        }
-    }
-
-    // --- Firestore Operations ---
-
-    // Generic function to toggle a topic status (Like or Save)
-    async function toggleTopicStatus(topicId, collectionName) {
-        // --- Authentication Check removed from logic ---
-        
-        // Use the current userId (either authenticated or anonymous)
-        const currentUserId = userId || auth.currentUser?.uid; 
-        if (!currentUserId) {
-             console.error("User ID is not defined. Cannot save or like.");
-             return;
-        }
-
-        const path = `/artifacts/${appId}/users/${currentUserId}/${collectionName}`;
-        const topicDocRef = doc(db, path, topicId);
-
-        try {
-            // Find the correct elements for UI feedback
-            const topicElement = document.querySelector(`.topic-card[data-topic-id="${topicId}"]`);
-            const iconClass = collectionName === 'likes' ? 'liked-icon' : 'saved-icon';
-            const buttonClass = collectionName === 'likes' ? '.like-button' : '.save-button';
-            
-            const button = topicElement.querySelector(buttonClass);
-            const iconSpan = button.querySelector('.material-symbols-outlined');
-
-            // Determine if the topic is currently marked as active based on UI state 
-            const isActive = iconSpan.classList.contains(iconClass);
-
-            if (isActive) {
-                // If active, delete the document
-                await deleteDoc(topicDocRef);
-                console.log(`Topic ${topicId} removed from ${collectionName}.`);
-            } else {
-                // If inactive, add the document
-                await setDoc(topicDocRef, { 
-                    topicId: topicId,
-                    timestamp: Date.now()
-                });
-                console.log(`Topic ${topicId} added to ${collectionName}.`);
-            }
-        } catch (error) {
-            console.error(`Error toggling status in ${collectionName}:`, error);
-        }
-    }
-
-    // Public functions called by the HTML buttons
-    window.toggleLike = (topicId, buttonElement) => toggleTopicStatus(topicId, 'likes');
-    window.toggleSave = (topicId, buttonElement) => toggleTopicStatus(topicId, 'saves');
-    window.openUserProfile = () => {
+    <script>
+        function openUserProfile() {
         window.location.href = '/user_page/';
     }
 
- 
-
-    function setupRealtimeListeners() {
-        if (!userId) {
-            
-            userId = auth.currentUser?.uid;
-            if (!userId) return; 
-        }
+    // --- TOAST NOTIFICATION FUNCTION ---
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 transform transition-all duration-300 translate-x-full ${
+            type === 'success' ? 'bg-green-500 text-white' : 
+            type === 'error' ? 'bg-red-500 text-white' : 
+            'bg-primary text-gray-900'
+        }`;
         
-        const likedTopicsPath = `/artifacts/${appId}/users/${userId}/likes`;
-        const savedTopicsPath = `/artifacts/${appId}/users/${userId}/saves`;
-
-        // Listener for Likes
-        onSnapshot(collection(db, likedTopicsPath), (snapshot) => {
-            const likedTopicIds = new Set();
-            snapshot.forEach(doc => likedTopicIds.add(doc.id));
-            updateTopicIcons(likedTopicIds, 'likes');
-        });
-
-        // Listener for Saves
-        onSnapshot(collection(db, savedTopicsPath), (snapshot) => {
-            const savedTopicIds = new Set();
-            snapshot.forEach(doc => savedTopicIds.add(doc.id));
-            updateTopicIcons(savedTopicIds, 'saves');
-        });
+        const icon = type === 'success' ? '✓' : type === 'error' ? '✕' : '💾';
+        toast.innerHTML = `
+            <span class="text-xl font-bold">${icon}</span>
+            <span class="font-medium">${message}</span>
+        `;
+        
+        const container = document.getElementById('toast-container');
+        container.appendChild(toast);
+        
+        // Animate in
+        setTimeout(() => toast.classList.remove('translate-x-full'), 100);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            toast.classList.add('translate-x-full');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
     }
 
-    function updateTopicIcons(activeTopicIds, type) {
-        const iconClass = type === 'likes' ? 'liked-icon' : 'saved-icon';
-        const buttonClass = type === 'likes' ? '.like-button' : '.save-button';
+    // Start of edit wesam - Like/Save toggle functions with toast notifications and persistent state
+    // Toggle like function for greeting page
+    function toggleLikeGreeting(topicId, buttonElement) {
+        console.log('Toggling like for topic:', topicId);
+        const formData = new FormData();
         
-        // Find all topic cards on the page
-        document.querySelectorAll('.topic-card').forEach(card => {
-            const topicId = card.getAttribute('data-topic-id');
-            const button = card.querySelector(buttonClass);
-            const iconSpan = button ? button.querySelector('.material-symbols-outlined') : null;
-
-            if (iconSpan) {
-                if (activeTopicIds.has(topicId)) {
-                    // Topic is in the database: Apply active style
-                    iconSpan.classList.add(iconClass);
-                } else {
-                    // Topic is NOT in the database: Remove active style
-                    iconSpan.classList.remove(iconClass);
-                }
+        formData.append('topic_id', topicId);
+        
+        fetch("{% url 'toggle_like' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
             }
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Response data:', data);
+            if (data.status === 'added') {
+                const icon = buttonElement.querySelector('.material-symbols-outlined');
+                icon.style.fontVariationSettings = "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                icon.classList.add('text-red-500');
+                showToast('❤️ Topic liked! Check your profile to see it.', 'success');
+            } else if (data.status === 'removed') {
+                const icon = buttonElement.querySelector('.material-symbols-outlined');
+                icon.style.fontVariationSettings = "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                icon.classList.remove('text-red-500');
+                showToast('Like removed from your profile', 'info');
+            } else if (data.status === 'error') {
+                showToast(data.message || 'Please log in to like topics', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error toggling like:', error);
+            showToast('Failed to update like. Please try again.', 'error');
         });
     }
 
-    // Initialize Firebase and set up listeners when the page loads
-    initFirebase();
+    // Toggle save function for greeting page
+    function toggleSaveGreeting(topicId, buttonElement) {
+        console.log('Toggling save for topic:', topicId);
+        const formData = new FormData();
+        formData.append('topic_id', topicId);
+        
+        fetch("{% url 'toggle_save' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Response data:', data);
+            if (data.status === 'added') {
+                const icon = buttonElement.querySelector('.material-symbols-outlined');
+                icon.style.fontVariationSettings = "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                icon.classList.add('text-primary');
+                showToast('🔖 Topic saved! View it in your profile.', 'success');
+            } else if (data.status === 'removed') {
+                const icon = buttonElement.querySelector('.material-symbols-outlined');
+                icon.style.fontVariationSettings = "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                icon.classList.remove('text-primary');
+                showToast('Topic removed from saved items', 'info');
+            } else if (data.status === 'error') {
+                showToast(data.message || 'Please log in to save topics', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error toggling save:', error);
+            showToast('Failed to save topic. Please try again.', 'error');
+        });
+    }
+
+    // Load user's saved and liked topics on page load
+    async function loadUserTopicStates() {
+        try {
+            // Fetch liked topics
+            const likesResponse = await fetch("{% url 'get_likes' %}");
+            const likes = await likesResponse.json();
+            const likedTopicIds = likes.map(like => like.topic_id);
+            
+            // Fetch saved topics
+            const savedResponse = await fetch("{% url 'get_saved_topics' %}");
+            const saved = await savedResponse.json();
+            const savedTopicIds = saved.map(save => save.topic_id);
+            
+            // Update like buttons
+            document.querySelectorAll('[onclick^="toggleLikeGreeting"]').forEach(button => {
+                const topicId = parseInt(button.getAttribute('onclick').match(/\d+/)[0]);
+                if (likedTopicIds.includes(topicId)) {
+                    const icon = button.querySelector('.material-symbols-outlined');
+                    icon.style.fontVariationSettings = "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                    icon.classList.add('text-red-500');
+                }
+            });
+            
+            // Update save buttons
+            document.querySelectorAll('[onclick^="toggleSaveGreeting"]').forEach(button => {
+                const topicId = parseInt(button.getAttribute('onclick').match(/\d+/)[0]);
+                if (savedTopicIds.includes(topicId)) {
+                    const icon = button.querySelector('.material-symbols-outlined');
+                    icon.style.fontVariationSettings = "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                    icon.classList.add('text-primary');
+                }
+            });
+        } catch (error) {
+            console.error('Error loading topic states:', error);
+        }
+    }
+
+    // Call on page load
+    document.addEventListener('DOMContentLoaded', loadUserTopicStates);
+    // End of edit wesam - Like/Save toggle functions
+
+    
+
+
 </script>
 
 </body>
